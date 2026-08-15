@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>数理统计课程地位知识图谱</title>
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 100%; height: 100%; background: #ffffff; overflow: hidden; font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif; color: #203047; }
+#graph { display: block; width: 100vw; height: 100vh; background: #ffffff; cursor: grab; }
+#graph:active { cursor: grabbing; }
+.link { stroke: #9fb8cf; stroke-width: 1.35; opacity: .72; }
+.link-label { font-size: 10px; fill: #60758d; text-anchor: middle; pointer-events: none; }
+.node circle { stroke-width: 1.4; filter: drop-shadow(0 7px 15px rgba(38, 72, 108, .13)); }
+.node text { text-anchor: middle; dominant-baseline: central; pointer-events: none; font-weight: 700; fill: #203047; font-size: 12px; }
+.node.core text { fill: #173654; font-size: 16px; font-weight: 900; }
+.node.major text { fill: #263444; font-size: 15px; font-weight: 900; }
+#panel { position: fixed; right: 18px; top: 18px; width: 360px; max-width: calc(100vw - 36px); background: rgba(255,255,255,.95); border: 1px solid #d7e3ef; border-radius: 8px; box-shadow: 0 14px 34px rgba(38, 72, 108, .13); padding: 14px 16px; line-height: 1.55; }
+#panel h1 { margin: 0 0 6px; font-size: 18px; color: #173654; }
+#panel p { margin: 6px 0; font-size: 13px; color: #405064; }
+#panel .meta { margin-top: 10px; color: #6d7f91; font-size: 12px; }
+#toolbar { position: fixed; left: 18px; top: 18px; display: flex; gap: 8px; background: rgba(255,255,255,.94); border: 1px solid #d7e3ef; border-radius: 8px; padding: 8px; box-shadow: 0 10px 26px rgba(38, 72, 108, .11); }
+button { border: 1px solid #bdd0e2; background: #f5f9fc; color: #264866; padding: 7px 10px; border-radius: 6px; font-weight: 800; cursor: pointer; }
+button:hover { background: #eaf3fb; }
+#legend { position: fixed; left: 18px; bottom: 18px; display: grid; grid-template-columns: repeat(3, auto); gap: 7px 12px; background: rgba(255,255,255,.94); border: 1px solid #d7e3ef; border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #4d6075; }
+.dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+</style>
+</head>
+<body>
+<svg id="graph"></svg>
+<div id="toolbar"><button id="reset">重置</button><button id="focus">聚焦数理统计</button></div>
+<aside id="panel">
+  <h1>数理统计课程地位知识图谱</h1>
+  <p>中心节点是“数理统计”。图谱展示它在应用统计学专业培养方案中的主干课程、专业核心必修、上游基础、下游专业课程、实践课程与毕业要求支撑关系。</p>
+  <p class="meta">可拖拽节点，滚轮缩放，拖动画布平移。点击节点查看说明。</p>
+</aside>
+<div id="legend">
+  <span><i class="dot" style="background:#ffd88f"></i>核心/专业</span>
+  <span><i class="dot" style="background:#bfe3ff"></i>平台/定位</span>
+  <span><i class="dot" style="background:#d6f4d2"></i>必修/基础</span>
+  <span><i class="dot" style="background:#eadbff"></i>选修</span>
+  <span><i class="dot" style="background:#ffd4dd"></i>实践/能力</span>
+  <span><i class="dot" style="background:#dce4ef"></i>毕业要求</span>
+</div>
+<script>
+const graph = {"nodes": [{"id": "major", "label": "应用统计学专业\n2024版培养方案", "group": "专业", "level": 0, "detail": "培养面向粤港澳大湾区，具备统计学、经济学、现代统计方法与数据分析能力的应用型人才。"}, {"id": "course", "label": "数理统计", "group": "核心", "level": 0, "detail": "人才培养方案主干课程之一；位于专业教育课程平台，是连接概率论、统计推断与后续专业应用课程的枢纽。"}, {"id": "main_subjects", "label": "主干学科", "group": "定位", "level": 1, "detail": "数学、统计学、计算机科学与技术、经济学。"}, {"id": "main_courses", "label": "主干课程", "group": "定位", "level": 1, "detail": "方案列出数学分析、高等代数、概率论、数理统计、应用多元统计分析、抽样调查、应用时间序列分析、应用回归分析等。"}, {"id": "platform_prof", "label": "专业教育课程平台\n29.90%", "group": "平台", "level": 1, "detail": "专业教育课程平台共16门、46.5学分、896学时。"}, {"id": "module_core", "label": "专业核心课程模块\n必修 8门 26学分", "group": "必修", "level": 1, "detail": "专业核心课程模块属于专业教育课程平台，是数理统计承担专业核心训练的位置。"}, {"id": "module_elective", "label": "专业选修课程模块\n选修 5门 12.5学分", "group": "选修", "level": 1, "detail": "专业选修课程模块面向金融、非参数、贝叶斯、市场调查、数据可视化等拓展方向。"}, {"id": "module_feature", "label": "特色模块\n必修 3门 8学分", "group": "必修", "level": 1, "detail": "专业教育平台中的特色模块，强化应用统计专业特色。"}, {"id": "platform_foundation", "label": "学科基础教育课程平台\n22.51%", "group": "平台", "level": 1, "detail": "学科基础教育课程平台共11门、35学分；为数理统计提供数学、概率和计算基础。"}, {"id": "platform_practice", "label": "实践教学课程平台\n14.79%", "group": "平台", "level": 1, "detail": "实践教学课程平台把统计推断能力转化为专业技能、实训、见习、毕业实习和毕业论文。"}, {"id": "math_analysis", "label": "数学分析", "group": "先修基础", "level": 2, "detail": "提供极限、积分、级数等数学基础。"}, {"id": "linear_algebra", "label": "高等代数", "group": "先修基础", "level": 2, "detail": "提供向量空间、矩阵和线性模型基础。"}, {"id": "probability", "label": "概率论", "group": "直接先修", "level": 2, "detail": "课程体系矩阵显示概率论位于学科基础教育平台；它是数理统计最直接的概率模型基础。"}, {"id": "programming", "label": "Python/算法/AI基础", "group": "计算基础", "level": 2, "detail": "为统计推断、模拟计算和数据分析提供工具支撑。"}, {"id": "economics", "label": "微观/宏观经济学", "group": "领域基础", "level": 2, "detail": "为经济金融场景中的统计推断和建模提供应用背景。"}, {"id": "sampling", "label": "抽样调查", "group": "后续必修", "level": 2, "detail": "以抽样分布、估计和误差控制为基础，面向调查设计与数据采集。"}, {"id": "regression", "label": "应用回归分析", "group": "后续必修", "level": 2, "detail": "以估计、检验和模型诊断为基础，面向变量关系建模。"}, {"id": "multivariate", "label": "应用多元统计分析", "group": "后续必修", "level": 2, "detail": "以统计推断、矩阵方法和模型思想为基础，面向多变量数据。"}, {"id": "time_series", "label": "应用时间序列分析", "group": "后续必修", "level": 2, "detail": "以随机性、估计和检验为基础，面向动态数据预测。"}, {"id": "stochastic", "label": "应用随机过程", "group": "后续必修", "level": 2, "detail": "延伸概率论和统计推断，理解随机系统演化。"}, {"id": "machine_learning", "label": "机器学习原理与实践", "group": "后续应用", "level": 2, "detail": "把统计推断、估计、误差和泛化思想迁移到算法建模。"}, {"id": "data_mining", "label": "数据挖掘", "group": "后续应用", "level": 2, "detail": "与统计推断、模型选择和数据处理能力相衔接。"}, {"id": "nonparam", "label": "非参数统计", "group": "专业选修", "level": 2, "detail": "专业选修方向，弱化分布假设，拓展统计检验与推断方法。"}, {"id": "bayes", "label": "贝叶斯方法", "group": "专业选修", "level": 2, "detail": "专业选修方向，延展参数估计、先验更新与不确定性表达。"}, {"id": "financial_stat", "label": "金融统计学", "group": "专业选修", "level": 2, "detail": "专业选修方向，把数理统计迁移到金融数据与风险分析。"}, {"id": "econometrics", "label": "计量经济学", "group": "专业选修", "level": 2, "detail": "专业选修方向，把统计推断应用于经济关系估计与检验。"}, {"id": "market", "label": "市场调查与分析", "group": "专业选修", "level": 2, "detail": "专业选修方向，连接抽样调查、描述统计和推断分析。"}, {"id": "visualization", "label": "数据可视化", "group": "专业选修", "level": 2, "detail": "专业选修方向，把统计结论转化为可沟通的数据表达。"}, {"id": "practice_skill", "label": "专业技能训练/实训", "group": "实践", "level": 2, "detail": "把统计推断能力转化为数据处理、建模和报告能力。"}, {"id": "practice_internship", "label": "毕业实习/专业见习", "group": "实践", "level": 2, "detail": "在真实行业场景中检验统计分析和问题解决能力。"}, {"id": "thesis", "label": "毕业论文（设计）", "group": "实践", "level": 2, "detail": "综合运用统计理论、模型方法和工具解决实际问题。"}, {"id": "grad1", "label": "毕业要求1\n专业知识 H", "group": "毕业要求", "level": 2, "detail": "数理统计对毕业要求1为高支撑：系统掌握统计学基本理论、基本知识。"}, {"id": "grad2", "label": "毕业要求2\n问题分析 H", "group": "毕业要求", "level": 2, "detail": "数理统计对毕业要求2为高支撑：具备统计描述、统计推断、预测和解决现实问题的能力。"}, {"id": "grad4", "label": "毕业要求4\n工具利用 M", "group": "毕业要求", "level": 2, "detail": "数理统计对毕业要求4为中支撑：结合 Excel、Matlab、Python、SQL 等工具进行数据处理。"}, {"id": "grad5", "label": "毕业要求5\n职业规范 L", "group": "毕业要求", "level": 2, "detail": "数理统计对毕业要求5为低支撑：通过规范推断、统计法规意识和信息综合分析体现职业规范。"}, {"id": "ability_stat_thinking", "label": "统计思维", "group": "能力", "level": 2, "detail": "从样本认识总体，理解随机性、不确定性和推断边界。"}, {"id": "ability_inference", "label": "统计推断", "group": "能力", "level": 2, "detail": "参数估计、假设检验、区间估计是数理统计对专业能力的核心贡献。"}, {"id": "ability_decision", "label": "推断与决策", "group": "能力", "level": 2, "detail": "服务培养目标中统计推断与决策、大数据分析和行业数据问题解决。"}], "links": [{"source": "major", "target": "main_subjects", "label": "包含"}, {"source": "major", "target": "main_courses", "label": "设置"}, {"source": "main_courses", "target": "course", "label": "主干"}, {"source": "major", "target": "platform_prof", "label": "课程平台"}, {"source": "major", "target": "platform_foundation", "label": "课程平台"}, {"source": "major", "target": "platform_practice", "label": "课程平台"}, {"source": "platform_prof", "target": "module_core", "label": "必修"}, {"source": "platform_prof", "target": "module_elective", "label": "选修"}, {"source": "platform_prof", "target": "module_feature", "label": "必修"}, {"source": "module_core", "target": "course", "label": "核心必修"}, {"source": "platform_foundation", "target": "math_analysis", "label": "基础"}, {"source": "platform_foundation", "target": "linear_algebra", "label": "基础"}, {"source": "platform_foundation", "target": "probability", "label": "直接先修"}, {"source": "platform_foundation", "target": "programming", "label": "工具"}, {"source": "platform_foundation", "target": "economics", "label": "场景"}, {"source": "math_analysis", "target": "course", "label": "支撑"}, {"source": "linear_algebra", "target": "course", "label": "支撑"}, {"source": "probability", "target": "course", "label": "先修"}, {"source": "programming", "target": "course", "label": "工具支撑"}, {"source": "economics", "target": "course", "label": "应用背景"}, {"source": "course", "target": "sampling", "label": "支撑"}, {"source": "course", "target": "regression", "label": "支撑"}, {"source": "course", "target": "multivariate", "label": "支撑"}, {"source": "course", "target": "time_series", "label": "支撑"}, {"source": "course", "target": "stochastic", "label": "延伸"}, {"source": "course", "target": "machine_learning", "label": "迁移"}, {"source": "course", "target": "data_mining", "label": "迁移"}, {"source": "module_elective", "target": "nonparam", "label": "选修"}, {"source": "module_elective", "target": "bayes", "label": "选修"}, {"source": "module_elective", "target": "financial_stat", "label": "选修"}, {"source": "module_elective", "target": "econometrics", "label": "选修"}, {"source": "module_elective", "target": "market", "label": "选修"}, {"source": "module_elective", "target": "visualization", "label": "选修"}, {"source": "course", "target": "nonparam", "label": "方法拓展"}, {"source": "course", "target": "bayes", "label": "方法拓展"}, {"source": "course", "target": "financial_stat", "label": "领域应用"}, {"source": "course", "target": "econometrics", "label": "领域应用"}, {"source": "course", "target": "market", "label": "调查应用"}, {"source": "course", "target": "visualization", "label": "表达应用"}, {"source": "platform_practice", "target": "practice_skill", "label": "实践"}, {"source": "platform_practice", "target": "practice_internship", "label": "实践"}, {"source": "platform_practice", "target": "thesis", "label": "综合"}, {"source": "course", "target": "practice_skill", "label": "转化"}, {"source": "course", "target": "practice_internship", "label": "应用"}, {"source": "course", "target": "thesis", "label": "综合运用"}, {"source": "course", "target": "grad1", "label": "H"}, {"source": "course", "target": "grad2", "label": "H"}, {"source": "course", "target": "grad4", "label": "M"}, {"source": "course", "target": "grad5", "label": "L"}, {"source": "course", "target": "ability_stat_thinking", "label": "形成"}, {"source": "course", "target": "ability_inference", "label": "核心"}, {"source": "course", "target": "ability_decision", "label": "服务"}, {"source": "ability_stat_thinking", "target": "grad1", "label": "支撑"}, {"source": "ability_inference", "target": "grad2", "label": "支撑"}, {"source": "ability_decision", "target": "grad2", "label": "支撑"}, {"source": "ability_decision", "target": "grad4", "label": "工具化"}]};
+const svg = document.getElementById('graph');
+const NS = 'http://www.w3.org/2000/svg';
+let width = innerWidth, height = innerHeight;
+svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+const viewport = document.createElementNS(NS, 'g');
+svg.appendChild(viewport);
+let transform = {x: 0, y: 0, k: 1};
+function applyTransform() { viewport.setAttribute('transform', `translate(${transform.x},${transform.y}) scale(${transform.k})`); }
+const color = {
+  "专业": "#ffd88f", "核心": "#ffc966", "定位": "#c9e6ff", "平台": "#bfe3ff",
+  "必修": "#d6f4d2", "选修": "#eadbff", "先修基础": "#e3f5d8", "直接先修": "#c9efbf",
+  "计算基础": "#d6edff", "领域基础": "#e8f0c8", "后续必修": "#d7f6e6", "后续应用": "#dcefff",
+  "专业选修": "#eadbff", "实践": "#ffd4dd", "毕业要求": "#dce4ef", "能力": "#ffe3bd"
+};
+const radius = {
+  "专业": 58, "核心": 64, "定位": 42, "平台": 46, "必修": 42, "选修": 42,
+  "毕业要求": 41, "能力": 38, "实践": 38
+};
+const nodes = graph.nodes.map((d, i) => {
+  const a = (i / graph.nodes.length) * Math.PI * 2;
+  const ring = d.level === 0 ? (d.id === 'major' ? 170 : 0) : 175 + d.level * 95 + (i % 4) * 14;
+  return {...d, x: width/2 + Math.cos(a) * ring, y: height/2 + Math.sin(a) * ring, vx:0, vy:0, r: radius[d.group] || 34};
+});
+const byId = new Map(nodes.map(d => [d.id, d]));
+const links = graph.links.map(l => ({...l, source: byId.get(l.source), target: byId.get(l.target)})).filter(l => l.source && l.target);
+const linkEls = links.map(() => {
+  const line = document.createElementNS(NS, 'line');
+  line.setAttribute('class', 'link');
+  viewport.appendChild(line);
+  return line;
+});
+const labelEls = links.map(l => {
+  const t = document.createElementNS(NS, 'text');
+  t.textContent = l.label || '';
+  t.setAttribute('class', 'link-label');
+  viewport.appendChild(t);
+  return t;
+});
+function shortLines(label) {
+  return String(label).split('\n').flatMap(s => {
+    if (s.length <= 9) return [s];
+    return [s.slice(0, 9), s.slice(9, 17) + (s.length > 17 ? '…' : '')];
+  }).slice(0, 3);
+}
+const nodeEls = nodes.map(n => {
+  const g = document.createElementNS(NS, 'g');
+  g.setAttribute('class', 'node ' + (n.id === 'course' ? 'core' : n.id === 'major' ? 'major' : ''));
+  const c = document.createElementNS(NS, 'circle');
+  c.setAttribute('r', n.r);
+  c.setAttribute('fill', color[n.group] || '#e8eef5');
+  c.setAttribute('stroke', n.id === 'course' ? '#c27a1e' : '#7fa0bd');
+  const text = document.createElementNS(NS, 'text');
+  const lines = shortLines(n.label);
+  lines.forEach((line, idx) => {
+    const sp = document.createElementNS(NS, 'tspan');
+    sp.setAttribute('x', '0');
+    sp.setAttribute('dy', idx === 0 ? (lines.length > 1 ? `${-.48 * (lines.length - 1)}em` : '0') : '1.08em');
+    sp.textContent = line;
+    text.appendChild(sp);
+  });
+  g.appendChild(c); g.appendChild(text); viewport.appendChild(g);
+  g.addEventListener('pointerdown', e => startDrag(e, n, g));
+  g.addEventListener('click', e => { showPanel(n); e.stopPropagation(); });
+  return g;
+});
+function escapeHtml(s) { return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function showPanel(n) {
+  document.getElementById('panel').innerHTML = `<h1>${escapeHtml(n.label).replace(/\n/g, ' ')}</h1><p>${escapeHtml(n.detail)}</p><p class="meta">类型：${escapeHtml(n.group)}。拖拽节点可调整布局。</p>`;
+}
+let dragging = null;
+function pointerToGraph(e) { const rect = svg.getBoundingClientRect(); return {x:(e.clientX-rect.left-transform.x)/transform.k, y:(e.clientY-rect.top-transform.y)/transform.k}; }
+function startDrag(e, n, el) { dragging = {node:n, id:e.pointerId}; el.setPointerCapture(e.pointerId); n.fx=n.x; n.fy=n.y; e.stopPropagation(); }
+let panning = false, panStart = null;
+svg.addEventListener('pointerdown', e => { if(e.target === svg) { panning=true; panStart={x:e.clientX,y:e.clientY,tx:transform.x,ty:transform.y}; } });
+svg.addEventListener('pointermove', e => {
+  if (dragging) { const p=pointerToGraph(e); dragging.node.x=p.x; dragging.node.y=p.y; dragging.node.fx=p.x; dragging.node.fy=p.y; dragging.node.vx=0; dragging.node.vy=0; }
+  else if (panning) { transform.x = panStart.tx + e.clientX - panStart.x; transform.y = panStart.ty + e.clientY - panStart.y; applyTransform(); }
+});
+svg.addEventListener('pointerup', () => { if(dragging) { dragging.node.fx=null; dragging.node.fy=null; dragging=null; } panning=false; });
+svg.addEventListener('wheel', e => {
+  e.preventDefault();
+  const scale = e.deltaY < 0 ? 1.08 : .925;
+  const rect = svg.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  const gx = (mx - transform.x) / transform.k, gy = (my - transform.y) / transform.k;
+  transform.k = Math.max(.35, Math.min(2.4, transform.k * scale));
+  transform.x = mx - gx * transform.k; transform.y = my - gy * transform.k; applyTransform();
+}, {passive:false});
+function tick() {
+  for (const l of links) {
+    const dx=l.target.x-l.source.x, dy=l.target.y-l.source.y, dist=Math.max(1,Math.hypot(dx,dy));
+    const desired = l.source.id === 'course' || l.target.id === 'course' ? 170 : 130;
+    const force=(dist-desired)*0.0028;
+    const fx=dx/dist*force, fy=dy/dist*force;
+    l.source.vx+=fx; l.source.vy+=fy; l.target.vx-=fx; l.target.vy-=fy;
+  }
+  for (let i=0;i<nodes.length;i++) for (let j=i+1;j<nodes.length;j++) {
+    const a=nodes[i], b=nodes[j], dx=b.x-a.x, dy=b.y-a.y, dist=Math.max(1,Math.hypot(dx,dy));
+    const min=a.r+b.r+18;
+    if(dist<min) { const f=(min-dist)*0.02; const fx=dx/dist*f, fy=dy/dist*f; a.vx-=fx; a.vy-=fy; b.vx+=fx; b.vy+=fy; }
+  }
+  for (const n of nodes) {
+    if(n.fx != null) { n.x=n.fx; n.y=n.fy; continue; }
+    const cx = n.id === 'course' ? width*.48 : width*.5;
+    const cy = n.id === 'course' ? height*.50 : height*.5;
+    n.vx += (cx-n.x)*0.00035; n.vy += (cy-n.y)*0.00035;
+    n.vx *= .86; n.vy *= .86; n.x += n.vx; n.y += n.vy;
+  }
+  render(); requestAnimationFrame(tick);
+}
+function render() {
+  links.forEach((l,i) => {
+    linkEls[i].setAttribute('x1', l.source.x); linkEls[i].setAttribute('y1', l.source.y);
+    linkEls[i].setAttribute('x2', l.target.x); linkEls[i].setAttribute('y2', l.target.y);
+    labelEls[i].setAttribute('x', (l.source.x+l.target.x)/2); labelEls[i].setAttribute('y', (l.source.y+l.target.y)/2);
+  });
+  nodes.forEach((n,i) => nodeEls[i].setAttribute('transform', `translate(${n.x},${n.y})`));
+}
+document.getElementById('reset').onclick = () => { transform={x:0,y:0,k:1}; applyTransform(); };
+document.getElementById('focus').onclick = () => { transform={x:width*.03,y:height*.02,k:.9}; applyTransform(); showPanel(byId.get('course')); };
+window.addEventListener('resize', () => { width=innerWidth; height=innerHeight; svg.setAttribute('viewBox', `0 0 ${width} ${height}`); });
+tick();
+</script>
+  <style>.page-qr-panel{position:fixed;right:18px;bottom:18px;z-index:9999;width:150px;padding:12px;border:1px solid #dbe4ef;border-radius:16px;background:rgba(255,255,255,.96);box-shadow:0 12px 32px rgba(15,23,42,.18);font-family:"Microsoft YaHei",sans-serif;text-align:center}.page-qr-panel img{display:block;width:126px;height:126px;margin:auto}.page-qr-panel strong{display:block;margin:6px 0 2px;font-size:13px;color:#172033}.page-qr-panel a{font-size:12px;color:#1d4ed8;text-decoration:none}@media(max-width:700px){.page-qr-panel{width:112px;padding:8px}.page-qr-panel img{width:94px;height:94px}}@media print{.page-qr-panel{position:fixed;box-shadow:none}}</style>
+  <aside class="page-qr-panel" aria-label="本页二维码"><img src="qrcodes/course-position-map.png" alt="数理统计课程地位知识图谱二维码"><strong>扫码打开本页</strong><a href="index.html">返回资源首页</a> · <a href="qrcodes/course-position-map.png" download>下载二维码</a></aside>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>数理统计课程经典阅读文献</title>
+  <style>
+    :root {
+      --ink: #18202a;
+      --muted: #5c6875;
+      --line: #d9e1ea;
+      --paper: #ffffff;
+      --soft: #f4f7f9;
+      --accent: #186c72;
+      --accent-2: #9a4f1c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+      color: var(--ink);
+      background: #eef3f5;
+      line-height: 1.65;
+    }
+    header {
+      background: #102b32;
+      color: white;
+      padding: 42px 8vw 34px;
+    }
+    header h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 46px);
+      letter-spacing: 0;
+    }
+    header p {
+      margin: 0;
+      max-width: 980px;
+      color: #d9e8ea;
+    }
+    main {
+      width: min(1120px, 92vw);
+      margin: 28px auto 56px;
+    }
+    section {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 18px 0;
+    }
+    h2 { margin: 0 0 14px; font-size: 24px; }
+    h3 { margin: 22px 0 8px; font-size: 18px; color: #163d46; }
+    a { color: var(--accent); text-decoration-thickness: 1px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .item {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 15px;
+      background: #fbfcfd;
+    }
+    .tag {
+      display: inline-block;
+      font-size: 12px;
+      color: #20434a;
+      background: #e3f1f1;
+      border: 1px solid #c4dddd;
+      border-radius: 999px;
+      padding: 2px 8px;
+      margin: 4px 4px 0 0;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      color: white;
+      background: var(--accent-2);
+      border-radius: 999px;
+      padding: 2px 8px;
+      margin-left: 6px;
+    }
+    .badge.online { background: #27714f; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px;
+      vertical-align: top;
+      text-align: left;
+    }
+    th { background: var(--soft); }
+    .apa {
+      padding-left: 28px;
+      text-indent: -28px;
+      margin: 12px 0;
+    }
+    .note {
+      border-left: 4px solid var(--accent);
+      background: #eef8f8;
+      padding: 12px 14px;
+      margin: 12px 0;
+      color: #24494f;
+    }
+    .small { color: var(--muted); font-size: 14px; }
+    footer {
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+      margin-top: 26px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>数理统计课程经典阅读文献</h1>
+    <p>面向“数理统计”课程的经典阅读清单，参考国外公开课程书单，按课程模块组织，并提供 APA 格式参考文献。本文件为雨课堂附件单文件版，正文内容不依赖本机文件夹。</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>使用说明</h2>
+      <div class="note">本文件可以直接作为雨课堂附件上传。学生下载或在线预览时，可以看到全部阅读模块与 APA 文献。文中只保留在线课程页和 DOI/出版社入口，不依赖本机 JSON、BibTeX 或本地归档页面。</div>
+      <table>
+        <tr><th>适用对象</th><td>数理统计、本科高年级统计推断、研究生统计理论课程。</td></tr>
+        <tr><th>阅读层次</th><td>核心教材用于系统学习；经典论文用于专题研讨、课程思政中的统计史脉络、研究生拓展阅读。</td></tr>
+        <tr><th>版权说明</th><td>本文件仅提供题录、课程来源和阅读建议，不包含受版权保护的教材或期刊全文。</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>国外课程书单依据</h2>
+      <div class="grid">
+        <div class="item">
+          <h3>MIT OpenCourseWare 18.655</h3>
+          <p>Mathematical Statistics, Spring 2016。可作为研究生数理统计课程的公开参照。</p>
+          <p><a href="https://ocw.mit.edu/courses/18-655-mathematical-statistics-spring-2016/pages/syllabus/">在线课程页</a> <span class="badge online">online</span></p>
+        </div>
+        <div class="item">
+          <h3>Stanford STATS 300A</h3>
+          <p>Theory of Statistics。用于参照理论统计核心课的阅读深度和课程组织。</p>
+          <p><a href="https://web.stanford.edu/class/stats300a/">在线课程页</a> <span class="badge online">online</span></p>
+        </div>
+        <div class="item">
+          <h3>Carnegie Mellon Stat 705</h3>
+          <p>研究生统计理论课程页，可参考其对统计推断、渐近理论和现代统计教材的组织。</p>
+          <p><a href="https://www.stat.cmu.edu/~larry/=stat705/">在线课程页</a> <span class="badge online">online</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>按课程内容组织的阅读模块</h2>
+      <h3>1. 统计模型、似然、充分性与指数族</h3>
+      <p>推荐阅读：Casella & Berger；Keener；Fisher (1922)；Pearson (1900)。</p>
+      <p class="small">课堂用途：引入统计模型、抽样分布、似然、充分统计量、完备性；从 Fisher 的理论统计基础延伸到现代推断框架。</p>
+      <p><span class="tag">likelihood</span><span class="tag">sufficiency</span><span class="tag">exponential family</span></p>
+
+      <h3>2. 点估计、信息不等式与 UMVU</h3>
+      <p>推荐阅读：Lehmann & Casella；Rao (1945/1973)；Ferguson；Stein (1956)。</p>
+      <p class="small">课堂用途：讲解 Cramer-Rao lower bound、Rao-Blackwellization、Lehmann-Scheffe theorem；用 Stein 现象扩展“最优估计”的直觉边界。</p>
+      <p><span class="tag">UMVU</span><span class="tag">Cramer-Rao</span><span class="tag">Rao-Blackwell</span><span class="tag">Stein phenomenon</span></p>
+
+      <h3>3. 假设检验、似然比与 Neyman-Pearson 理论</h3>
+      <p>推荐阅读：Lehmann & Romano；Neyman & Pearson (1933)；Wilks (1938)；Wald (1943)。</p>
+      <p class="small">课堂用途：构建最强检验、似然比检验、Wald/score/LR 大样本检验体系；比较精确小样本理论与渐近理论。</p>
+      <p><span class="tag">Neyman-Pearson lemma</span><span class="tag">likelihood ratio test</span><span class="tag">Wald test</span></p>
+
+      <h3>4. 置信区间、枢轴量与覆盖概率</h3>
+      <p>推荐阅读：Neyman (1937)；Casella & Berger；Bickel & Doksum。</p>
+      <p class="small">课堂用途：追溯 confidence interval 的理论来源；将枢轴法、反演检验、覆盖概率放在统一框架下。</p>
+      <p><span class="tag">confidence interval</span><span class="tag">pivotal quantity</span><span class="tag">coverage probability</span></p>
+
+      <h3>5. 渐近理论、MLE 与极限分布</h3>
+      <p>推荐阅读：van der Vaart；Bickel & Doksum；Wilks (1938)；Wald (1943)。</p>
+      <p class="small">课堂用途：支撑一致性、渐近正态、Delta method、局部渐近正态等高级主题；为研究生统计推断课程提供理论桥梁。</p>
+      <p><span class="tag">MLE</span><span class="tag">asymptotic normality</span><span class="tag">delta method</span></p>
+
+      <h3>6. 贝叶斯推断、决策理论与风险函数</h3>
+      <p>推荐阅读：Berger；Ferguson。适合课程后段专题拓展。</p>
+      <p class="small">课堂用途：将频率学派估计/检验与风险、损失、先验、后验联系起来，适合作为课程专题或研究生拓展阅读。</p>
+      <p><span class="tag">Bayesian inference</span><span class="tag">decision theory</span><span class="tag">risk</span></p>
+
+      <h3>7. 重抽样、Bootstrap 与现代统计思想</h3>
+      <p>推荐阅读：Efron (1979)；Wasserman。适合课程结尾连接现代计算统计。</p>
+      <p class="small">课堂用途：连接经典抽样理论与现代计算统计，帮助学生看到统计推断从解析理论到计算方法的演进。</p>
+      <p><span class="tag">bootstrap</span><span class="tag">jackknife</span><span class="tag">computational statistics</span></p>
+    </section>
+
+    <section>
+      <h2>建议阅读顺序</h2>
+      <table>
+        <tr><th>阶段</th><th>阅读建议</th><th>目标</th></tr>
+        <tr><td>入门主线</td><td>Casella & Berger；Wasserman；Keener 选读。</td><td>建立统计推断的整体框架。</td></tr>
+        <tr><td>估计专题</td><td>Lehmann & Casella；Rao；Stein。</td><td>理解估计优良性、信息界和可容许性。</td></tr>
+        <tr><td>检验专题</td><td>Lehmann & Romano；Neyman & Pearson；Wilks；Wald。</td><td>掌握从最强检验到大样本检验的逻辑。</td></tr>
+        <tr><td>研究生拓展</td><td>van der Vaart；Berger；Ferguson。</td><td>进入渐近理论、贝叶斯与决策理论。</td></tr>
+        <tr><td>现代连接</td><td>Efron；Wasserman。</td><td>理解重抽样和计算统计思想。</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>APA 格式参考文献</h2>
+      <h3>核心教材与专著</h3>
+      <p class="apa">Berger, J. O. (1985). <em>Statistical decision theory and Bayesian analysis</em> (2nd ed.). Springer.</p>
+      <p class="apa">Bickel, P. J., & Doksum, K. A. (2015). <em>Mathematical statistics: Basic ideas and selected topics, Volume I</em> (2nd ed.). CRC Press.</p>
+      <p class="apa">Casella, G., & Berger, R. L. (2002). <em>Statistical inference</em> (2nd ed.). Duxbury.</p>
+      <p class="apa">Cox, D. R., & Hinkley, D. V. (1974). <em>Theoretical statistics</em>. Chapman & Hall.</p>
+      <p class="apa">Ferguson, T. S. (1967). <em>Mathematical statistics: A decision theoretic approach</em>. Academic Press.</p>
+      <p class="apa">Keener, R. W. (2010). <em>Theoretical statistics: Topics for a core course</em>. Springer. <a href="https://doi.org/10.1007/978-0-387-93839-4">https://doi.org/10.1007/978-0-387-93839-4</a></p>
+      <p class="apa">Lehmann, E. L., & Casella, G. (1998). <em>Theory of point estimation</em> (2nd ed.). Springer. <a href="https://doi.org/10.1007/b98854">https://doi.org/10.1007/b98854</a></p>
+      <p class="apa">Lehmann, E. L., & Romano, J. P. (2005). <em>Testing statistical hypotheses</em> (3rd ed.). Springer. <a href="https://doi.org/10.1007/0-387-27605-X">https://doi.org/10.1007/0-387-27605-X</a></p>
+      <p class="apa">Rao, C. R. (1973). <em>Linear statistical inference and its applications</em> (2nd ed.). Wiley.</p>
+      <p class="apa">Shao, J. (2003). <em>Mathematical statistics</em> (2nd ed.). Springer.</p>
+      <p class="apa">van der Vaart, A. W. (1998). <em>Asymptotic statistics</em>. Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511802256">https://doi.org/10.1017/CBO9780511802256</a></p>
+      <p class="apa">Wasserman, L. (2004). <em>All of statistics: A concise course in statistical inference</em>. Springer. <a href="https://doi.org/10.1007/978-0-387-21736-9">https://doi.org/10.1007/978-0-387-21736-9</a></p>
+
+      <h3>经典论文</h3>
+      <p class="apa">Efron, B. (1979). Bootstrap methods: Another look at the jackknife. <em>The Annals of Statistics, 7</em>(1), 1-26. <a href="https://doi.org/10.1214/aos/1176344552">https://doi.org/10.1214/aos/1176344552</a></p>
+      <p class="apa">Fisher, R. A. (1922). On the mathematical foundations of theoretical statistics. <em>Philosophical Transactions of the Royal Society of London. Series A, 222</em>, 309-368. <a href="https://doi.org/10.1098/rsta.1922.0009">https://doi.org/10.1098/rsta.1922.0009</a></p>
+      <p class="apa">Neyman, J. (1937). Outline of a theory of statistical estimation based on the classical theory of probability. <em>Philosophical Transactions of the Royal Society of London. Series A, 236</em>(767), 333-380. <a href="https://doi.org/10.1098/rsta.1937.0005">https://doi.org/10.1098/rsta.1937.0005</a></p>
+      <p class="apa">Neyman, J., & Pearson, E. S. (1933). On the problem of the most efficient tests of statistical hypotheses. <em>Philosophical Transactions of the Royal Society of London. Series A, 231</em>, 289-337. <a href="https://doi.org/10.1098/rsta.1933.0009">https://doi.org/10.1098/rsta.1933.0009</a></p>
+      <p class="apa">Pearson, K. (1900). On the criterion that a given system of deviations from the probable in the case of a correlated system of variables is such that it can be reasonably supposed to have arisen from random sampling. <em>The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science, 50</em>(302), 157-175. <a href="https://doi.org/10.1080/14786440009463897">https://doi.org/10.1080/14786440009463897</a></p>
+      <p class="apa">Rao, C. R. (1945). Information and the accuracy attainable in the estimation of statistical parameters. <em>Bulletin of the Calcutta Mathematical Society, 37</em>, 81-91.</p>
+      <p class="apa">Stein, C. (1956). Inadmissibility of the usual estimator for the mean of a multivariate normal distribution. In <em>Proceedings of the Third Berkeley Symposium on Mathematical Statistics and Probability</em> (Vol. 1, pp. 197-206). University of California Press.</p>
+      <p class="apa">Wald, A. (1943). Tests of statistical hypotheses concerning several parameters when the number of observations is large. <em>Transactions of the American Mathematical Society, 54</em>(3), 426-482. <a href="https://doi.org/10.1090/S0002-9947-1943-0012401-3">https://doi.org/10.1090/S0002-9947-1943-0012401-3</a></p>
+      <p class="apa">Wilks, S. S. (1938). The large-sample distribution of the likelihood ratio for testing composite hypotheses. <em>The Annals of Mathematical Statistics, 9</em>(1), 60-62. <a href="https://doi.org/10.1214/aoms/1177732360">https://doi.org/10.1214/aoms/1177732360</a></p>
+    </section>
+
+    <section>
+      <h2>给学生的阅读提醒</h2>
+      <p>这些文献不要求一次性全部读完。建议先用教材建立概念框架，再围绕课堂专题选读经典论文。经典论文的价值不只在结论，更在于它们如何定义问题、建立统计对象、并把“不确定性”转化为可推导、可检验的数学结构。</p>
+    </section>
+
+    <footer>雨课堂单文件版 · Generated on 2026-07-12</footer>
+  </main>
+  <style>.page-qr-panel{position:fixed;right:18px;bottom:18px;z-index:9999;width:150px;padding:12px;border:1px solid #dbe4ef;border-radius:16px;background:rgba(255,255,255,.96);box-shadow:0 12px 32px rgba(15,23,42,.18);font-family:"Microsoft YaHei",sans-serif;text-align:center}.page-qr-panel img{display:block;width:126px;height:126px;margin:auto}.page-qr-panel strong{display:block;margin:6px 0 2px;font-size:13px;color:#172033}.page-qr-panel a{font-size:12px;color:#1d4ed8;text-decoration:none}@media(max-width:700px){.page-qr-panel{width:112px;padding:8px}.page-qr-panel img{width:94px;height:94px}}@media print{.page-qr-panel{position:fixed;box-shadow:none}}</style>
+  <aside class="page-qr-panel" aria-label="本页二维码"><img src="qrcodes/classic-readings.png" alt="数理统计经典阅读文献二维码"><strong>扫码打开本页</strong><a href="index.html">返回资源首页</a> · <a href="qrcodes/classic-readings.png" download>下载二维码</a></aside>
+</body>
+</html>

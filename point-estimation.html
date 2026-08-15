@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>第六章 点估计</title>
+  <style>
+    :root {
+      --paper: #ffffff;
+      --ink: #1f2937;
+      --muted: #667085;
+      --line: #d8d2c5;
+      --accent: #b45309;
+      --accent-soft: #f3e4d5;
+      --accent-deep: #78350f;
+      --node-w: 154px;
+      --node-h: 154px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Noto Serif SC", "Source Han Serif SC", "Microsoft YaHei", serif;
+      line-height: 1.72;
+    }
+    body.graph-only {
+      background: #ffffff;
+      overflow: hidden;
+      line-height: 1;
+    }
+    header {
+      padding: 42px min(6vw, 72px) 18px;
+      border-bottom: 1px solid var(--line);
+    }
+    .eyebrow {
+      color: var(--accent);
+      font-size: 14px;
+      letter-spacing: 0;
+      font-weight: 700;
+    }
+    h1 {
+      margin: 10px 0 8px;
+      font-size: clamp(32px, 4.4vw, 60px);
+      line-height: 1.08;
+      letter-spacing: 0;
+      text-wrap: balance;
+    }
+    .subtitle {
+      margin: 0;
+      max-width: 980px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+    .source {
+      margin-top: 14px;
+      color: #7c6f64;
+      font-size: 14px;
+    }
+    main {
+      padding: 26px min(6vw, 72px) 56px;
+    }
+    .notice {
+      max-width: 1080px;
+      margin: 0 0 24px;
+      padding: 14px 18px;
+      border: 1px solid color-mix(in oklch, var(--accent) 32%, var(--line));
+      background: color-mix(in oklch, var(--accent-soft) 74%, white);
+      border-radius: 8px;
+      color: var(--accent-deep);
+      font-weight: 700;
+    }
+    .graph-wrap {
+      position: relative;
+      overflow-x: auto;
+      border-top: 2px solid var(--accent);
+      border-bottom: 1px solid var(--line);
+      padding: 24px 0 30px;
+    }
+    .graph {
+      position: relative;
+      min-width: 1180px;
+      height: 820px;
+    }
+    body.graph-only .graph {
+      width: 100vw;
+      height: 100vh;
+      min-width: 0;
+    }
+    svg.mindmap {
+      width: 100%;
+      height: 100%;
+      display: block;
+      touch-action: none;
+      user-select: none;
+    }
+    .link {
+      fill: none;
+      stroke: color-mix(in oklch, var(--accent) 58%, #9b9287);
+      stroke-width: 1.6;
+      opacity: 0.72;
+    }
+    .node-circle {
+      cursor: grab;
+      filter: drop-shadow(0 12px 18px rgba(31, 41, 55, 0.12));
+      transition: stroke-width 0.16s ease, filter 0.16s ease;
+    }
+    .node-circle:active {
+      cursor: grabbing;
+    }
+    .node-group-wrap.dragging .node-circle {
+      stroke-width: 4;
+      filter: drop-shadow(0 16px 22px rgba(31, 41, 55, 0.18));
+    }
+    .node-label {
+      font-weight: 800;
+      font-size: 15px;
+      fill: #172033;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      pointer-events: none;
+    }
+    .node-label.title {
+      font-size: 18px;
+    }
+    .node-group-text {
+      font-size: 12px;
+      fill: #475569;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      pointer-events: none;
+    }
+    .edge-label {
+      font-size: 12px;
+      fill: #736b62;
+      paint-order: stroke;
+      stroke: var(--paper);
+      stroke-width: 5px;
+      stroke-linejoin: round;
+    }
+    .summary {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.72fr) minmax(420px, 1.28fr);
+      gap: 34px;
+      margin-top: 32px;
+      align-items: start;
+    }
+    h2 {
+      margin: 0 0 14px;
+      font-size: 24px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+    .takeaways ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .takeaways li {
+      margin: 9px 0;
+    }
+    .node-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .node-list article {
+      border-bottom: 1px solid var(--line);
+      padding: 0 0 12px;
+    }
+    .node-list b {
+      display: block;
+      font-size: 15px;
+      color: var(--accent-deep);
+    }
+    .node-list span {
+      display: block;
+      margin-top: 4px;
+      color: #5f5b55;
+      font-size: 14px;
+    }
+    footer {
+      padding: 22px min(6vw, 72px) 34px;
+      border-top: 1px solid var(--line);
+      color: #7c6f64;
+      font-size: 13px;
+    }
+    @media (max-width: 820px) {
+      header { padding-top: 28px; }
+      main { padding-inline: 18px; }
+      .summary { grid-template-columns: 1fr; }
+      .node-list { grid-template-columns: 1fr; }
+      .graph { min-width: 1120px; height: 860px; }
+    }
+  </style>
+</head>
+<body class="graph-only">
+  <div id="graph" class="graph"></div>
+  <script>
+    const PURE_GRAPH = true;
+    const graphData = {"nodes": [{"id": "point", "label": "点估计", "group": "中心主题", "level": 0, "brief": "用样本构造统计量，对未知参数给出一个估计值。"}, {"id": "setting", "label": "统计模型与未知参数", "group": "问题设定", "level": 1, "brief": "明确总体分布、参数空间和待估参数或参数函数。"}, {"id": "methods", "label": "估计量构造", "group": "方法主线", "level": 1, "brief": "从样本信息出发构造参数的统计估计量。"}, {"id": "criteria", "label": "估计量评价", "group": "评价主线", "level": 1, "brief": "从偏差、方差和大样本表现比较不同估计量。"}, {"id": "optimal", "label": "最优无偏估计", "group": "最优性", "level": 1, "brief": "在无偏估计类中寻求方差最小的估计量。"}, {"id": "moment", "label": "矩估计法", "group": "构造方法", "level": 2, "brief": "以样本矩替代总体矩并解方程得到参数估计。"}, {"id": "substitution", "label": "替换原理", "group": "构造方法", "level": 2, "brief": "以经验分布或样本特征替换未知总体特征。"}, {"id": "mle", "label": "最大似然估计", "group": "构造方法", "level": 2, "brief": "选择使已观测样本最可能出现的参数值。"}, {"id": "likelihood", "label": "似然函数", "group": "最大似然", "level": 3, "brief": "把样本值固定后，将联合密度或概率看作参数的函数。"}, {"id": "score", "label": "似然方程", "group": "最大似然", "level": 3, "brief": "对数似然求导并令其为零，结合边界判断极大值。"}, {"id": "invariance", "label": "不变性原理", "group": "最大似然", "level": 3, "brief": "参数函数的最大似然估计可由原参数估计直接变换得到。"}, {"id": "unbiased", "label": "无偏性", "group": "评价标准", "level": 2, "brief": "估计量的数学期望等于被估参数。"}, {"id": "bias", "label": "偏差", "group": "评价标准", "level": 3, "brief": "估计量期望与真参数之差，用于刻画系统误差。"}, {"id": "efficient", "label": "有效性", "group": "评价标准", "level": 2, "brief": "在无偏估计量之间比较方差，方差越小越有效。"}, {"id": "mse", "label": "均方误差", "group": "评价标准", "level": 2, "brief": "MSE 等于方差与偏差平方之和。"}, {"id": "consistent", "label": "相合性", "group": "大样本性质", "level": 2, "brief": "样本量增大时估计量依概率收敛到真参数。"}, {"id": "asym", "label": "渐近正态性", "group": "大样本性质", "level": 2, "brief": "标准化估计误差在大样本下趋近正态分布。"}, {"id": "sufficient", "label": "充分统计量", "group": "信息基础", "level": 2, "brief": "保留样本中关于未知参数的全部相关信息。"}, {"id": "rao", "label": "Rao-Blackwell 改进", "group": "最优性", "level": 3, "brief": "对充分统计量取条件期望可降低或不增加方差。"}, {"id": "complete", "label": "完备性", "group": "最优性", "level": 3, "brief": "与充分性结合可保证无偏估计的唯一最优性。"}, {"id": "umvue", "label": "一致最小方差无偏估计", "group": "最优性", "level": 3, "brief": "对每个参数值都在无偏估计类中具有最小方差。"}, {"id": "crlb", "label": "Cramer-Rao 下界", "group": "最优性", "level": 3, "brief": "给出满足正则条件的无偏估计量方差下界。"}], "edges": [{"source": "point", "target": "setting", "label": ""}, {"source": "point", "target": "methods", "label": ""}, {"source": "point", "target": "criteria", "label": ""}, {"source": "point", "target": "optimal", "label": ""}, {"source": "methods", "target": "moment", "label": ""}, {"source": "moment", "target": "substitution", "label": ""}, {"source": "methods", "target": "mle", "label": ""}, {"source": "mle", "target": "likelihood", "label": ""}, {"source": "likelihood", "target": "score", "label": ""}, {"source": "mle", "target": "invariance", "label": ""}, {"source": "criteria", "target": "unbiased", "label": ""}, {"source": "unbiased", "target": "bias", "label": ""}, {"source": "criteria", "target": "efficient", "label": ""}, {"source": "criteria", "target": "mse", "label": ""}, {"source": "bias", "target": "mse", "label": ""}, {"source": "criteria", "target": "consistent", "label": ""}, {"source": "criteria", "target": "asym", "label": ""}, {"source": "setting", "target": "sufficient", "label": ""}, {"source": "optimal", "target": "sufficient", "label": ""}, {"source": "sufficient", "target": "rao", "label": ""}, {"source": "sufficient", "target": "complete", "label": ""}, {"source": "rao", "target": "umvue", "label": ""}, {"source": "complete", "target": "umvue", "label": ""}, {"source": "optimal", "target": "crlb", "label": ""}, {"source": "mle", "target": "consistent", "label": ""}, {"source": "mle", "target": "asym", "label": ""}]};
+    const graphEl = document.getElementById("graph");
+    const WIDTH = PURE_GRAPH ? 1280 : 1180;
+    const macaronPalette = [
+      ["#ffd6e0", "#be5f73"],
+      ["#ffe0c2", "#b7793d"],
+      ["#fff1b8", "#9a7a16"],
+      ["#d9f3d1", "#5f8d53"],
+      ["#ccefe8", "#347f76"],
+      ["#d7ecff", "#4b79a8"],
+      ["#e6dcff", "#7a63ad"],
+      ["#f8d9f0", "#a15c8d"],
+      ["#f3e7d4", "#8c7050"],
+      ["#dce8dc", "#5e7d62"]
+    ];
+    const levels = new Map();
+    graphData.nodes.forEach(node => {
+      if (!levels.has(node.level)) levels.set(node.level, []);
+      levels.get(node.level).push(node);
+    });
+    const maxLevel = Math.max(...graphData.nodes.map(n => n.level));
+    const largestLevelCount = Math.max(...Array.from(levels.values()).map(items => items.length));
+    const HEIGHT = PURE_GRAPH ? Math.max(900, 160 + largestLevelCount * 136) : Math.max(820, 160 + largestLevelCount * 136);
+    graphEl.style.height = PURE_GRAPH ? "100vh" : `${HEIGHT}px`;
+    const titleNode = node => node.level === 0 || node.group === "章节";
+    const nodes = graphData.nodes.map((node, index) => {
+      const levelItems = levels.get(node.level) || [];
+      const levelIndex = levelItems.findIndex(item => item.id === node.id);
+      const gap = levelItems.length <= 4 ? 172 : levelItems.length <= 6 ? 154 : 132;
+      const total = (levelItems.length - 1) * gap;
+      const tone = PURE_GRAPH ? ["#dff1ff", "#5f8fb8"] : macaronPalette[(node.level * 5 + levelIndex) % macaronPalette.length];
+      return {
+        ...node,
+        index,
+        levelIndex,
+        r: titleNode(node) ? (node.level === 0 ? 94 : 82) : 62,
+        x: 132 + node.level * (PURE_GRAPH ? 302 : 286),
+        y: HEIGHT / 2 - total / 2 + levelIndex * gap,
+        vx: 0,
+        vy: 0,
+        anchorX: 132 + node.level * (PURE_GRAPH ? 302 : 286),
+        anchorY: HEIGHT / 2 - total / 2 + levelIndex * gap,
+        fill: tone[0],
+        tone: tone[1],
+        pinned: false
+      };
+    });
+    const nodeById = new Map(nodes.map(node => [node.id, node]));
+    const links = graphData.edges
+      .map(edge => ({ ...edge, source: nodeById.get(edge.source), target: nodeById.get(edge.target) }))
+      .filter(edge => edge.source && edge.target);
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("class", "mindmap");
+    svg.setAttribute("viewBox", `0 0 ${WIDTH} ${HEIGHT}`);
+    svg.setAttribute("role", "img");
+    svg.setAttribute("aria-label", "可拖动知识图谱");
+    const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+    defs.innerHTML = `<marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="var(--accent)"/></marker>`;
+    svg.appendChild(defs);
+    const linkLayer = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    const labelLayer = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    const nodeLayer = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    svg.append(linkLayer, labelLayer, nodeLayer);
+    const linkEls = links.map(link => {
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("class", "link");
+      path.setAttribute("marker-end", "url(#arrow)");
+      linkLayer.appendChild(path);
+      return path;
+    });
+    const labelEls = links.map(link => {
+      if (link.label && !PURE_GRAPH) {
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("class", "edge-label");
+        text.setAttribute("text-anchor", "middle");
+        text.textContent = link.label;
+        labelLayer.appendChild(text);
+        return text;
+      }
+      return null;
+    });
+    const nodeEls = nodes.map(node => {
+      const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      group.setAttribute("class", "node-group-wrap");
+      group.setAttribute("tabindex", "0");
+      group.setAttribute("aria-label", `${node.label}：${node.brief}`);
+      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      circle.setAttribute("class", "node-circle");
+      circle.setAttribute("r", node.r);
+      circle.setAttribute("fill", node.fill);
+      circle.setAttribute("stroke", node.tone);
+      circle.setAttribute("stroke-width", titleNode(node) ? "2.6" : "2");
+      group.appendChild(circle);
+
+      const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      label.setAttribute("class", "node-label" + (titleNode(node) ? " title" : ""));
+      splitLabel(node.label, titleNode(node) ? 7 : 6).forEach((line, index, lines) => {
+        const tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+        tspan.setAttribute("x", "0");
+        tspan.setAttribute("dy", index === 0 ? `${-(lines.length - 1) * 10 - 7}` : "20");
+        tspan.textContent = line;
+        label.appendChild(tspan);
+      });
+      group.appendChild(label);
+
+      const groupText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      groupText.setAttribute("class", "node-group-text");
+      groupText.setAttribute("y", titleNode(node) ? 35 : 30);
+      groupText.textContent = node.group;
+      group.appendChild(groupText);
+
+      group.addEventListener("pointerdown", event => startDrag(event, node, group));
+      group.addEventListener("dblclick", () => { node.pinned = false; });
+      nodeLayer.appendChild(group);
+      return group;
+    });
+    graphEl.appendChild(svg);
+
+    let dragging = null;
+    function startDrag(event, node, element) {
+      dragging = { node, element, pointerId: event.pointerId };
+      node.pinned = true;
+      node.vx = 0;
+      node.vy = 0;
+      element.classList.add("dragging");
+      element.setPointerCapture(event.pointerId);
+      event.preventDefault();
+    }
+    svg.addEventListener("pointermove", event => {
+      if (!dragging) return;
+      const point = svg.createSVGPoint();
+      point.x = event.clientX;
+      point.y = event.clientY;
+      const svgPoint = point.matrixTransform(svg.getScreenCTM().inverse());
+      dragging.node.x = clamp(svgPoint.x, dragging.node.r + 8, WIDTH - dragging.node.r - 8);
+      dragging.node.y = clamp(svgPoint.y, dragging.node.r + 8, HEIGHT - dragging.node.r - 8);
+      renderGraph();
+    });
+    svg.addEventListener("pointerup", endDrag);
+    svg.addEventListener("pointercancel", endDrag);
+
+    function endDrag(event) {
+      if (!dragging) return;
+      dragging.element.classList.remove("dragging");
+      try { dragging.element.releasePointerCapture(dragging.pointerId); } catch (_) {}
+      dragging = null;
+    }
+
+    function tick() {
+      for (const link of links) {
+        const dx = link.target.x - link.source.x;
+        const dy = link.target.y - link.source.y;
+        const dist = Math.max(1, Math.hypot(dx, dy));
+        const desired = link.source.r + link.target.r + 112;
+        const force = (dist - desired) * 0.004;
+        const fx = dx / dist * force;
+        const fy = dy / dist * force;
+        if (!link.source.pinned) { link.source.vx += fx; link.source.vy += fy; }
+        if (!link.target.pinned) { link.target.vx -= fx; link.target.vy -= fy; }
+      }
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const a = nodes[i];
+          const b = nodes[j];
+          const dx = b.x - a.x;
+          const dy = b.y - a.y;
+          const dist = Math.max(1, Math.hypot(dx, dy));
+          const minDist = a.r + b.r + 18;
+          const overlap = minDist - dist;
+          const push = overlap > 0 ? overlap * 0.018 : 46 / (dist * dist);
+          const fx = dx / dist * push;
+          const fy = dy / dist * push;
+          if (!a.pinned) { a.vx -= fx; a.vy -= fy; }
+          if (!b.pinned) { b.vx += fx; b.vy += fy; }
+        }
+      }
+      nodes.forEach(node => {
+        if (!node.pinned) {
+          node.vx += (node.anchorX - node.x) * 0.006;
+          node.vy += (node.anchorY - node.y) * 0.006;
+          node.vx *= 0.84;
+          node.vy *= 0.84;
+          node.x = clamp(node.x + node.vx, node.r + 8, WIDTH - node.r - 8);
+          node.y = clamp(node.y + node.vy, node.r + 8, HEIGHT - node.r - 8);
+        }
+      });
+      renderGraph();
+      requestAnimationFrame(tick);
+    }
+
+    function renderGraph() {
+      nodeEls.forEach((element, index) => {
+        const node = nodes[index];
+        element.setAttribute("transform", `translate(${node.x},${node.y})`);
+      });
+      links.forEach((link, index) => {
+        const dx = link.target.x - link.source.x;
+        const dy = link.target.y - link.source.y;
+        const dist = Math.max(1, Math.hypot(dx, dy));
+        const sx = link.source.x + dx / dist * (link.source.r + 4);
+        const sy = link.source.y + dy / dist * (link.source.r + 4);
+        const tx = link.target.x - dx / dist * (link.target.r + 9);
+        const ty = link.target.y - dy / dist * (link.target.r + 9);
+        const curve = Math.min(96, Math.max(34, dist * 0.28));
+        const mx = (sx + tx) / 2;
+        const my = (sy + ty) / 2;
+        linkEls[index].setAttribute("d", `M ${sx} ${sy} Q ${mx} ${my - curve * 0.08} ${tx} ${ty}`);
+        const label = labelEls[index];
+        if (label) {
+          label.setAttribute("x", mx);
+          label.setAttribute("y", my - 7);
+        }
+      });
+    }
+
+    function splitLabel(value, maxChars) {
+      const text = String(value);
+      if (text.length <= maxChars) return [text];
+      const lines = [];
+      let current = "";
+      for (const char of text) {
+        current += char;
+        if (current.length >= maxChars) {
+          lines.push(current);
+          current = "";
+        }
+      }
+      if (current) lines.push(current);
+      return lines.slice(0, 3);
+    }
+
+    function clamp(value, min, max) {
+      return Math.min(max, Math.max(min, value));
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, ch => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[ch]));
+    }
+    renderGraph();
+    requestAnimationFrame(tick);
+  </script>
+  <style>.page-qr-panel{position:fixed;right:18px;bottom:18px;z-index:9999;width:150px;padding:12px;border:1px solid #dbe4ef;border-radius:16px;background:rgba(255,255,255,.96);box-shadow:0 12px 32px rgba(15,23,42,.18);font-family:"Microsoft YaHei",sans-serif;text-align:center}.page-qr-panel img{display:block;width:126px;height:126px;margin:auto}.page-qr-panel strong{display:block;margin:6px 0 2px;font-size:13px;color:#172033}.page-qr-panel a{font-size:12px;color:#1d4ed8;text-decoration:none}@media(max-width:700px){.page-qr-panel{width:112px;padding:8px}.page-qr-panel img{width:94px;height:94px}}@media print{.page-qr-panel{position:fixed;box-shadow:none}}</style>
+  <aside class="page-qr-panel" aria-label="本页二维码"><img src="qrcodes/point-estimation.png" alt="点估计知识图谱二维码"><strong>扫码打开本页</strong><a href="index.html">返回资源首页</a> · <a href="qrcodes/point-estimation.png" download>下载二维码</a></aside>
+</body>
+</html>

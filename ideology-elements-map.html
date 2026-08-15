@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>概率统计课程思政元素图谱</title>
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 100%; height: 100%; background: #ffffff; font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif; color: #4a2f32; overflow: hidden; }
+#graph { width: 100vw; height: 100vh; display: block; background: #ffffff; }
+.link { stroke: #e7b7b7; stroke-width: 1.2; opacity: .78; }
+.node circle { fill: #ffd6d9; stroke: #d98991; stroke-width: 1.4; filter: drop-shadow(0 5px 12px rgba(160, 70, 78, .15)); }
+.node.root circle { fill: #ffc2c7; stroke: #bf626d; stroke-width: 2; }
+.node text { font-size: 12px; fill: #6f3037; text-anchor: middle; dominant-baseline: central; pointer-events: none; font-weight: 600; }
+.node.root text { font-size: 16px; fill: #7f1f2a; font-weight: 800; }
+.label { font-size: 10px; fill: #b77a80; text-anchor: middle; pointer-events: none; }
+#tip { position: fixed; left: 18px; bottom: 18px; max-width: 520px; background: rgba(255,255,255,.94); border: 1px solid #f0cccc; border-radius: 8px; padding: 12px 14px; box-shadow: 0 12px 30px rgba(150,70,80,.12); color: #5b3236; line-height: 1.55; font-size: 13px; }
+#tip strong { color: #9c3742; }
+#toolbar { position: fixed; top: 16px; left: 18px; display: flex; gap: 8px; align-items: center; background: rgba(255,255,255,.92); border: 1px solid #f0cccc; border-radius: 8px; padding: 8px 10px; box-shadow: 0 10px 24px rgba(150,70,80,.10); }
+button { border: 1px solid #e2aeb4; background: #fff7f7; color: #8f3b44; border-radius: 6px; padding: 6px 10px; font-weight: 700; cursor: pointer; }
+button:hover { background: #ffe7e9; }
+</style>
+</head>
+<body>
+<svg id="graph"></svg>
+<div id="toolbar"><button id="reset">重置视图</button><button id="center">居中</button></div>
+<div id="tip"><strong>概率统计课程思政元素图谱</strong><br>白色背景、浅红色节点。可拖拽节点，滚轮缩放，拖动画布平移。点击节点可查看说明。</div>
+<script>
+const graph = {"nodes": [{"id": "root", "label": "概率统计课程思政元素", "group": "中心", "level": 0, "detail": "第五至九章课程思政融入总图谱"}, {"id": "policy0", "label": "教育部高等学校课程思政建设指导纲要", "group": "政策依据", "level": 1, "detail": "价值塑造、知识传授、能力培养三者融为一体；理学工学课程强调科学思维、科学伦理、工程伦理、大国工匠精神和科技报国。"}, {"id": "policy1", "label": "教育部高等教育司2023年工作要点", "group": "政策依据", "level": 1, "detail": "全面深化新工科、新医科、新农科、新文科建设，强化交叉融合，完善人才自主培养新范式。"}, {"id": "policy2", "label": "中共中央办公厅、国务院办公厅关于进一步弘扬科学家精神加强作风和学风建设的意见", "group": "政策依据", "level": 1, "detail": "爱国、创新、求实、奉献、协同、育人等科学家精神，以及科研诚信、反对浮躁和尊重学术民主。"}, {"id": "policy3", "label": "教育强国建设规划纲要（2024-2035年）", "group": "政策依据", "level": 1, "detail": "服务教育强国、科技强国、人才强国建设，把专业学习与国家战略需求连接起来。"}, {"id": "第五章", "label": "第五章\\n统计量及其分布", "group": "章节知识", "level": 1, "detail": "总体、样本、经验分布、统计量、抽样分布、样本均值、样本方差、次序统计量、χ²/t/F 分布、充分统计量、因子分解定理。"}, {"id": "第五章_e0", "label": "实事求是的数据观", "group": "章节思政", "level": 2, "detail": "实事求是的数据观：从原始样本出发，用统计量而不是主观印象认识总体。"}, {"id": "第五章_e1", "label": "科学抽象与有效表达", "group": "章节思政", "level": 2, "detail": "科学抽象与有效表达：统计量把复杂数据压缩成可推断的信息，培养去粗取精、抓主要矛盾的能力。"}, {"id": "第五章_e2", "label": "规范意识与可复现精神", "group": "章节思政", "level": 2, "detail": "规范意识与可复现精神：频数表、图形显示和抽样分布要求清楚说明数据来源、统计口径和计算过程。"}, {"id": "第五章_e3", "label": "科学家精神", "group": "章节思政", "level": 2, "detail": "科学家精神：以抽样分布和三大分布训练严谨求证，理解基础理论对国家治理和工程实践的支撑作用。"}, {"id": "第六章", "label": "第六章\\n参数估计", "group": "章节知识", "level": 1, "detail": "点估计、无偏性、有效性、相合性、矩估计、最大似然估计、EM 算法、均方误差、Cramer-Rao 不等式、贝叶斯估计、置信区间、样本量确定。"}, {"id": "第六章_e0", "label": "不确定性意识", "group": "章节思政", "level": 2, "detail": "不确定性意识：参数估计承认未知和误差，培养谦逊、审慎、可校正的科学态度。"}, {"id": "第六章_e1", "label": "证据更新与终身学习", "group": "章节思政", "level": 2, "detail": "证据更新与终身学习：贝叶斯思想可迁移到持续学习、动态决策和风险评估。"}, {"id": "第六章_e2", "label": "质量效率意识", "group": "章节思政", "level": 2, "detail": "质量效率意识：有效性、均方误差、样本量确定体现资源约束下追求可靠结论的工程思维。"}, {"id": "第六章_e3", "label": "服务国家需求", "group": "章节思政", "level": 2, "detail": "服务国家需求：估计方法支撑公共政策评估、工业质控、医学研究和金融风险管理。"}, {"id": "第七章", "label": "第七章\\n假设检验", "group": "章节知识", "level": 1, "detail": "原假设、备择假设、显著性水平、p 值、两类错误、正态总体参数检验、似然比检验、χ² 拟合优度检验、列联表独立性检验、正态性检验、非参数检验。"}, {"id": "第七章_e0", "label": "证据意识与法治思维", "group": "章节思政", "level": 2, "detail": "证据意识与法治思维：检验规则要事先确定，不能看结果后改变标准。"}, {"id": "第七章_e1", "label": "风险责任意识", "group": "章节思政", "level": 2, "detail": "风险责任意识：第一类、第二类错误提醒学生在医疗、司法、工程和公共治理中审慎决策。"}, {"id": "第七章_e2", "label": "科研诚信与反对浮躁", "group": "章节思政", "level": 2, "detail": "科研诚信与反对浮躁：p 值不是包装结论的工具，不能选择性报告或夸大显著性。"}, {"id": "第七章_e3", "label": "批判性思维", "group": "章节思政", "level": 2, "detail": "批判性思维：不迷信直觉、不盲从权威，用可检验的证据讨论问题。"}, {"id": "第八章", "label": "第八章\\n方差分析与回归分析", "group": "章节知识", "level": 1, "detail": "单因子方差分析、平方和分解、均值比较、方差齐性检验、一元线性回归、最小二乘估计、回归显著性检验、估计与预测、曲线回归。"}, {"id": "第八章_e0", "label": "系统观念", "group": "章节思政", "level": 2, "detail": "系统观念：方差分析把总变异分解为组间、组内来源，训练从系统结构看问题。"}, {"id": "第八章_e1", "label": "公平比较意识", "group": "章节思政", "level": 2, "detail": "公平比较意识：多组比较要求控制误差和前提条件，避免用片面指标作结论。"}, {"id": "第八章_e2", "label": "大国工匠精神", "group": "章节思政", "level": 2, "detail": "大国工匠精神：回归与方差分析服务工艺优化、质量改进和精益求精。"}, {"id": "第八章_e3", "label": "跨学科迁移", "group": "章节思政", "level": 2, "detail": "跨学科迁移：统计建模连接工程、医学、农业、教育、经济与社会治理。"}, {"id": "第九章核查与附表资源", "label": "第九章核查与附表资源\\n附表、习题参考答案与参考文献", "group": "章节知识", "level": 1, "detail": "PDF 目录未见正文第九章；后续材料为泊松、正态、χ²、t、F、正态性检验、相关系数、游程检验、秩和检验等附表，以及习题参考答案和参考文献。"}, {"id": "第九章核查与附表资源_e0", "label": "规范使用工具", "group": "章节思政", "level": 2, "detail": "规范使用工具：查表不是机械套用，而是理解适用条件、自由度、显著性水平和精度边界。"}, {"id": "第九章核查与附表资源_e1", "label": "学术规范意识", "group": "章节思政", "level": 2, "detail": "学术规范意识：参考文献和习题答案用于核对、反思和追溯，不替代独立思考。"}, {"id": "第九章核查与附表资源_e2", "label": "标准化与共同语言", "group": "章节思政", "level": 2, "detail": "标准化与共同语言：统计表体现科学共同体的规范工具，支撑可复核、可交流的专业判断。"}, {"id": "第九章核查与附表资源_e3", "label": "工匠式细节意识", "group": "章节思政", "level": 2, "detail": "工匠式细节意识：自由度、尾部概率、分位数方向等细节错误会导致结论错误。"}, {"id": "el_立德树人", "label": "立德树人", "group": "通用元素", "level": 2, "detail": "把统计知识学习与服务国家、社会和人民需要联系起来。"}, {"id": "el_实事求是", "label": "实事求是", "group": "通用元素", "level": 2, "detail": "从样本事实出发，用数据、模型和证据说话。"}, {"id": "el_科学思维", "label": "科学思维", "group": "通用元素", "level": 2, "detail": "抽象、建模、推断、检验和反思构成统计学习主线。"}, {"id": "el_科学伦理", "label": "科学伦理", "group": "通用元素", "level": 2, "detail": "关注数据来源、样本偏差、隐私保护、选择性报告和模型误用。"}, {"id": "el_科研诚信", "label": "科研诚信", "group": "通用元素", "level": 2, "detail": "不篡改数据、不事后改假设、不夸大显著性、不隐瞒负结果。"}, {"id": "el_家国情怀", "label": "家国情怀", "group": "通用元素", "level": 2, "detail": "把统计推断用于公共卫生、工业升级、乡村振兴、教育评价和国家治理。"}, {"id": "el_大国工匠", "label": "大国工匠", "group": "通用元素", "level": 2, "detail": "用方差分析、回归、质量控制追求精密、稳定和持续改进。"}, {"id": "el_创新精神", "label": "创新精神", "group": "通用元素", "level": 2, "detail": "从模型假设到算法选择，鼓励提出新问题、新方法和新应用。"}, {"id": "el_协同精神", "label": "协同精神", "group": "通用元素", "level": 2, "detail": "统计建模常需与工程、医学、农业、管理、计算机等团队协作。"}, {"id": "el_法治与规则意识", "label": "法治与规则意识", "group": "通用元素", "level": 2, "detail": "检验规则、显著性水平和评价标准要事先公开、严格执行。"}, {"id": "el_风险责任", "label": "风险责任", "group": "通用元素", "level": 2, "detail": "两类错误和置信区间提醒学生理解决策风险与社会后果。"}, {"id": "el_标准规范", "label": "标准规范", "group": "通用元素", "level": 2, "detail": "统计表、报告格式、模型诊断和复核流程构成专业共同语言。"}, {"id": "el_跨学科迁移", "label": "跨学科迁移", "group": "通用元素", "level": 2, "detail": "把统计方法迁移到新工科、新医科、新农科、新文科场景。"}, {"id": "el_劳动精神", "label": "劳动精神", "group": "通用元素", "level": 2, "detail": "从真实数据采集、清洗、核验和分析中理解扎实工作的价值。"}, {"id": "el_文化自信", "label": "文化自信", "group": "通用元素", "level": 2, "detail": "讲清中国统计教育、国家调查、工程实践和现代化治理中的统计贡献。"}, {"id": "four_新工科", "label": "新工科", "group": "四新场景", "level": 2, "detail": "质量控制、可靠性工程、智能制造、芯片良率、交通能源预测。 强调工程伦理、精益求精、科技报国。"}, {"id": "four_新医科", "label": "新医科", "group": "四新场景", "level": 2, "detail": "临床试验、公共卫生监测、诊断检验、药品疗效评估。 强调生命至上、风险控制、数据伦理。"}, {"id": "four_新农科", "label": "新农科", "group": "四新场景", "level": 2, "detail": "田间试验、产量估计、生态监测、乡村振兴数据服务。 强调知农爱农、生态文明、把论文写在祖国大地上。"}, {"id": "four_新文科", "label": "新文科", "group": "四新场景", "level": 2, "detail": "社会调查、教育评价、公共政策、传播效果和文化数据分析。 强调经世致用、法治意识、社会责任。"}, {"id": "act_data", "label": "真实数据任务", "group": "教学活动", "level": 2, "detail": "从数据来源、口径、偏差和隐私入手。"}, {"id": "act_history", "label": "方法史导入", "group": "教学活动", "level": 2, "detail": "用统计学家、国家工程和实践问题说明方法产生背景。"}, {"id": "act_ethics", "label": "误用风险讨论", "group": "教学活动", "level": 2, "detail": "围绕 p 值误读、模型偏见和选择性报告展开。"}, {"id": "act_project", "label": "跨学科小项目", "group": "教学活动", "level": 2, "detail": "面向四新场景完成建模、检验和反思。"}, {"id": "act_report", "label": "规范报告", "group": "教学活动", "level": 2, "detail": "要求写出假设、方法、结论边界和价值反思。"}], "links": [{"source": "root", "target": "policy0", "label": "依据"}, {"source": "root", "target": "policy1", "label": "依据"}, {"source": "root", "target": "policy2", "label": "依据"}, {"source": "root", "target": "policy3", "label": "依据"}, {"source": "root", "target": "第五章", "label": "章节"}, {"source": "第五章", "target": "第五章_e0", "label": "融入"}, {"source": "第五章", "target": "第五章_e1", "label": "融入"}, {"source": "第五章", "target": "第五章_e2", "label": "融入"}, {"source": "第五章", "target": "第五章_e3", "label": "融入"}, {"source": "root", "target": "第六章", "label": "章节"}, {"source": "第六章", "target": "第六章_e0", "label": "融入"}, {"source": "第六章", "target": "第六章_e1", "label": "融入"}, {"source": "第六章", "target": "第六章_e2", "label": "融入"}, {"source": "第六章", "target": "第六章_e3", "label": "融入"}, {"source": "root", "target": "第七章", "label": "章节"}, {"source": "第七章", "target": "第七章_e0", "label": "融入"}, {"source": "第七章", "target": "第七章_e1", "label": "融入"}, {"source": "第七章", "target": "第七章_e2", "label": "融入"}, {"source": "第七章", "target": "第七章_e3", "label": "融入"}, {"source": "root", "target": "第八章", "label": "章节"}, {"source": "第八章", "target": "第八章_e0", "label": "融入"}, {"source": "第八章", "target": "第八章_e1", "label": "融入"}, {"source": "第八章", "target": "第八章_e2", "label": "融入"}, {"source": "第八章", "target": "第八章_e3", "label": "融入"}, {"source": "root", "target": "第九章核查与附表资源", "label": "章节"}, {"source": "第九章核查与附表资源", "target": "第九章核查与附表资源_e0", "label": "融入"}, {"source": "第九章核查与附表资源", "target": "第九章核查与附表资源_e1", "label": "融入"}, {"source": "第九章核查与附表资源", "target": "第九章核查与附表资源_e2", "label": "融入"}, {"source": "第九章核查与附表资源", "target": "第九章核查与附表资源_e3", "label": "融入"}, {"source": "root", "target": "el_立德树人", "label": "元素"}, {"source": "el_立德树人", "target": "第五章", "label": "对应"}, {"source": "el_立德树人", "target": "第六章", "label": "对应"}, {"source": "el_立德树人", "target": "第七章", "label": "对应"}, {"source": "el_立德树人", "target": "第八章", "label": "对应"}, {"source": "root", "target": "el_实事求是", "label": "元素"}, {"source": "el_实事求是", "target": "第五章", "label": "对应"}, {"source": "el_实事求是", "target": "第七章", "label": "对应"}, {"source": "root", "target": "el_科学思维", "label": "元素"}, {"source": "el_科学思维", "target": "第五章", "label": "对应"}, {"source": "el_科学思维", "target": "第六章", "label": "对应"}, {"source": "el_科学思维", "target": "第七章", "label": "对应"}, {"source": "el_科学思维", "target": "第八章", "label": "对应"}, {"source": "root", "target": "el_科学伦理", "label": "元素"}, {"source": "el_科学伦理", "target": "第五章", "label": "对应"}, {"source": "el_科学伦理", "target": "第六章", "label": "对应"}, {"source": "el_科学伦理", "target": "第七章", "label": "对应"}, {"source": "el_科学伦理", "target": "第八章", "label": "对应"}, {"source": "root", "target": "el_科研诚信", "label": "元素"}, {"source": "el_科研诚信", "target": "第七章", "label": "对应"}, {"source": "el_科研诚信", "target": "第九章核查与附表资源", "label": "对应"}, {"source": "root", "target": "el_家国情怀", "label": "元素"}, {"source": "el_家国情怀", "target": "第六章", "label": "对应"}, {"source": "el_家国情怀", "target": "第八章", "label": "对应"}, {"source": "root", "target": "el_大国工匠", "label": "元素"}, {"source": "el_大国工匠", "target": "第八章", "label": "对应"}, {"source": "el_大国工匠", "target": "第九章核查与附表资源", "label": "对应"}, {"source": "root", "target": "el_创新精神", "label": "元素"}, {"source": "el_创新精神", "target": "第六章", "label": "对应"}, {"source": "el_创新精神", "target": "第八章", "label": "对应"}, {"source": "root", "target": "el_协同精神", "label": "元素"}, {"source": "el_协同精神", "target": "第八章", "label": "对应"}, {"source": "root", "target": "el_法治与规则意识", "label": "元素"}, {"source": "el_法治与规则意识", "target": "第七章", "label": "对应"}, {"source": "root", "target": "el_风险责任", "label": "元素"}, {"source": "el_风险责任", "target": "第六章", "label": "对应"}, {"source": "el_风险责任", "target": "第七章", "label": "对应"}, {"source": "root", "target": "el_标准规范", "label": "元素"}, {"source": "el_标准规范", "target": "第九章核查与附表资源", "label": "对应"}, {"source": "root", "target": "el_跨学科迁移", "label": "元素"}, {"source": "el_跨学科迁移", "target": "第六章", "label": "对应"}, {"source": "el_跨学科迁移", "target": "第七章", "label": "对应"}, {"source": "el_跨学科迁移", "target": "第八章", "label": "对应"}, {"source": "root", "target": "el_劳动精神", "label": "元素"}, {"source": "el_劳动精神", "target": "第五章", "label": "对应"}, {"source": "el_劳动精神", "target": "第八章", "label": "对应"}, {"source": "root", "target": "el_文化自信", "label": "元素"}, {"source": "el_文化自信", "target": "第五章", "label": "对应"}, {"source": "el_文化自信", "target": "第六章", "label": "对应"}, {"source": "el_文化自信", "target": "第八章", "label": "对应"}, {"source": "root", "target": "four_新工科", "label": "迁移"}, {"source": "four_新工科", "target": "第六章", "label": "应用"}, {"source": "four_新工科", "target": "第七章", "label": "应用"}, {"source": "four_新工科", "target": "第八章", "label": "应用"}, {"source": "root", "target": "four_新医科", "label": "迁移"}, {"source": "four_新医科", "target": "第六章", "label": "应用"}, {"source": "four_新医科", "target": "第七章", "label": "应用"}, {"source": "four_新医科", "target": "第八章", "label": "应用"}, {"source": "root", "target": "four_新农科", "label": "迁移"}, {"source": "four_新农科", "target": "第六章", "label": "应用"}, {"source": "four_新农科", "target": "第七章", "label": "应用"}, {"source": "four_新农科", "target": "第八章", "label": "应用"}, {"source": "root", "target": "four_新文科", "label": "迁移"}, {"source": "four_新文科", "target": "第六章", "label": "应用"}, {"source": "four_新文科", "target": "第七章", "label": "应用"}, {"source": "four_新文科", "target": "第八章", "label": "应用"}, {"source": "root", "target": "act_data", "label": "实施"}, {"source": "act_data", "target": "el_科学伦理", "label": "支撑"}, {"source": "act_data", "target": "el_跨学科迁移", "label": "支撑"}, {"source": "root", "target": "act_history", "label": "实施"}, {"source": "act_history", "target": "el_科学伦理", "label": "支撑"}, {"source": "act_history", "target": "el_跨学科迁移", "label": "支撑"}, {"source": "root", "target": "act_ethics", "label": "实施"}, {"source": "act_ethics", "target": "el_科学伦理", "label": "支撑"}, {"source": "act_ethics", "target": "el_跨学科迁移", "label": "支撑"}, {"source": "root", "target": "act_project", "label": "实施"}, {"source": "act_project", "target": "el_科学伦理", "label": "支撑"}, {"source": "act_project", "target": "el_跨学科迁移", "label": "支撑"}, {"source": "root", "target": "act_report", "label": "实施"}, {"source": "act_report", "target": "el_科学伦理", "label": "支撑"}, {"source": "act_report", "target": "el_跨学科迁移", "label": "支撑"}]};
+const svg = document.getElementById('graph');
+const NS = 'http://www.w3.org/2000/svg';
+let width = window.innerWidth, height = window.innerHeight;
+svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+const viewport = document.createElementNS(NS, 'g');
+svg.appendChild(viewport);
+let transform = {x:0, y:0, k:1};
+function applyTransform() { viewport.setAttribute('transform', `translate(${transform.x},${transform.y}) scale(${transform.k})`); }
+const groupRadius = { "中心": 54, "政策依据": 37, "章节知识": 42, "章节思政": 32, "通用元素": 34, "四新场景": 34, "教学活动": 32 };
+const nodes = graph.nodes.map((d, i) => {
+  const angle = (i / graph.nodes.length) * Math.PI * 2;
+  const ring = d.level === 0 ? 0 : 150 + d.level * 105 + (i % 5) * 10;
+  return {...d, x: width/2 + Math.cos(angle)*ring, y: height/2 + Math.sin(angle)*ring, vx:0, vy:0, r: groupRadius[d.group] || 30};
+});
+const byId = new Map(nodes.map(d => [d.id, d]));
+const links = graph.links.map(l => ({...l, source: byId.get(l.source), target: byId.get(l.target)})).filter(l => l.source && l.target);
+const linkEls = links.map(l => {
+  const line = document.createElementNS(NS, 'line');
+  line.setAttribute('class', 'link');
+  viewport.appendChild(line);
+  return line;
+});
+const linkLabels = links.map(l => {
+  const t = document.createElementNS(NS, 'text');
+  t.setAttribute('class', 'label');
+  t.textContent = l.label || '';
+  viewport.appendChild(t);
+  return t;
+});
+const nodeEls = nodes.map(n => {
+  const g = document.createElementNS(NS, 'g');
+  g.setAttribute('class', 'node' + (n.id === 'root' ? ' root' : ''));
+  const c = document.createElementNS(NS, 'circle');
+  c.setAttribute('r', n.r);
+  const text = document.createElementNS(NS, 'text');
+  const lines = String(n.label).split('\n');
+  lines.forEach((line, idx) => {
+    const span = document.createElementNS(NS, 'tspan');
+    span.setAttribute('x', '0');
+    span.setAttribute('dy', idx === 0 ? (lines.length > 1 ? '-.42em' : '0') : '1.1em');
+    span.textContent = line.length > 9 ? line.slice(0, 9) + '…' : line;
+    text.appendChild(span);
+  });
+  g.appendChild(c); g.appendChild(text); viewport.appendChild(g);
+  g.addEventListener('pointerdown', e => startDrag(e, n, g));
+  g.addEventListener('click', e => {
+    document.getElementById('tip').innerHTML = `<strong>${escapeHtml(n.label).replace(/\n/g, ' ')}</strong><br>${escapeHtml(n.group)}：${escapeHtml(n.detail || '点击相邻节点查看关系。')}`;
+    e.stopPropagation();
+  });
+  return g;
+});
+function escapeHtml(s) { return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+let dragging = null;
+function pointerToGraph(e) { const rect = svg.getBoundingClientRect(); return {x:(e.clientX-rect.left-transform.x)/transform.k, y:(e.clientY-rect.top-transform.y)/transform.k}; }
+function startDrag(e, n, el) { dragging = {node:n, id:e.pointerId}; el.setPointerCapture(e.pointerId); n.fx = n.x; n.fy = n.y; e.stopPropagation(); }
+svg.addEventListener('pointermove', e => {
+  if (dragging) { const p = pointerToGraph(e); dragging.node.fx = p.x; dragging.node.fy = p.y; dragging.node.x = p.x; dragging.node.y = p.y; dragging.node.vx = 0; dragging.node.vy = 0; }
+  else if (panning) { transform.x = panStart.tx + e.clientX - panStart.x; transform.y = panStart.ty + e.clientY - panStart.y; applyTransform(); }
+});
+svg.addEventListener('pointerup', e => { if (dragging) { dragging.node.fx = null; dragging.node.fy = null; dragging = null; } panning = false; });
+let panning = false, panStart = null;
+svg.addEventListener('pointerdown', e => { if(e.target === svg) { panning = true; panStart = {x:e.clientX, y:e.clientY, tx:transform.x, ty:transform.y}; } });
+svg.addEventListener('wheel', e => {
+  e.preventDefault();
+  const scale = e.deltaY < 0 ? 1.08 : 0.925;
+  const rect = svg.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  const gx = (mx - transform.x) / transform.k, gy = (my - transform.y) / transform.k;
+  transform.k = Math.max(.35, Math.min(2.4, transform.k * scale));
+  transform.x = mx - gx * transform.k; transform.y = my - gy * transform.k;
+  applyTransform();
+}, {passive:false});
+function tick() {
+  for (const l of links) {
+    const dx = l.target.x - l.source.x, dy = l.target.y - l.source.y;
+    const dist = Math.max(1, Math.hypot(dx, dy));
+    const desired = 145 + (l.source.level + l.target.level) * 20;
+    const force = (dist - desired) * 0.0026;
+    const fx = dx / dist * force, fy = dy / dist * force;
+    l.source.vx += fx; l.source.vy += fy; l.target.vx -= fx; l.target.vy -= fy;
+  }
+  for (let i=0; i<nodes.length; i++) for (let j=i+1; j<nodes.length; j++) {
+    const a = nodes[i], b = nodes[j];
+    const dx = b.x-a.x, dy = b.y-a.y, dist = Math.max(1, Math.hypot(dx,dy));
+    const min = a.r + b.r + 22;
+    if (dist < min) {
+      const f = (min-dist)*0.018;
+      const fx = dx/dist*f, fy = dy/dist*f;
+      a.vx -= fx; a.vy -= fy; b.vx += fx; b.vy += fy;
+    }
+  }
+  for (const n of nodes) {
+    if (n.fx != null) { n.x = n.fx; n.y = n.fy; continue; }
+    n.vx += (width/2 - n.x) * 0.00035;
+    n.vy += (height/2 - n.y) * 0.00035;
+    n.vx *= .86; n.vy *= .86;
+    n.x += n.vx; n.y += n.vy;
+  }
+  render();
+  requestAnimationFrame(tick);
+}
+function render() {
+  links.forEach((l, i) => {
+    linkEls[i].setAttribute('x1', l.source.x); linkEls[i].setAttribute('y1', l.source.y);
+    linkEls[i].setAttribute('x2', l.target.x); linkEls[i].setAttribute('y2', l.target.y);
+    linkLabels[i].setAttribute('x', (l.source.x + l.target.x)/2); linkLabels[i].setAttribute('y', (l.source.y + l.target.y)/2);
+  });
+  nodes.forEach((n, i) => nodeEls[i].setAttribute('transform', `translate(${n.x},${n.y})`));
+}
+document.getElementById('reset').onclick = () => { transform={x:0,y:0,k:1}; applyTransform(); };
+document.getElementById('center').onclick = () => { transform={x:0,y:0,k:.82}; applyTransform(); };
+window.addEventListener('resize', () => { width=window.innerWidth; height=window.innerHeight; svg.setAttribute('viewBox', `0 0 ${width} ${height}`); });
+tick();
+</script>
+  <style>.page-qr-panel{position:fixed;right:18px;bottom:18px;z-index:9999;width:150px;padding:12px;border:1px solid #dbe4ef;border-radius:16px;background:rgba(255,255,255,.96);box-shadow:0 12px 32px rgba(15,23,42,.18);font-family:"Microsoft YaHei",sans-serif;text-align:center}.page-qr-panel img{display:block;width:126px;height:126px;margin:auto}.page-qr-panel strong{display:block;margin:6px 0 2px;font-size:13px;color:#172033}.page-qr-panel a{font-size:12px;color:#1d4ed8;text-decoration:none}@media(max-width:700px){.page-qr-panel{width:112px;padding:8px}.page-qr-panel img{width:94px;height:94px}}@media print{.page-qr-panel{position:fixed;box-shadow:none}}</style>
+  <aside class="page-qr-panel" aria-label="本页二维码"><img src="qrcodes/ideology-elements-map.png" alt="概率统计课程思政元素图谱二维码"><strong>扫码打开本页</strong><a href="index.html">返回资源首页</a> · <a href="qrcodes/ideology-elements-map.png" download>下载二维码</a></aside>
+</body>
+</html>

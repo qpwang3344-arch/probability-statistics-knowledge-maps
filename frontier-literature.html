@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>数理统计第5-9章前沿与应用文献</title>
+  <style>
+    :root {
+      --ink: #18202a;
+      --muted: #5c6875;
+      --line: #d8e0e8;
+      --paper: #ffffff;
+      --soft: #f4f7f9;
+      --accent: #1f6b74;
+      --accent2: #8b4d1f;
+      --green: #2d7254;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+      color: var(--ink);
+      background: #edf2f5;
+      line-height: 1.66;
+    }
+    header {
+      background: #102b32;
+      color: #fff;
+      padding: 42px 8vw 34px;
+    }
+    header h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 46px);
+      letter-spacing: 0;
+    }
+    header p {
+      max-width: 1000px;
+      margin: 0;
+      color: #dcebed;
+    }
+    main {
+      width: min(1180px, 92vw);
+      margin: 28px auto 56px;
+    }
+    section {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 18px 0;
+    }
+    h2 { margin: 0 0 14px; font-size: 24px; }
+    h3 { margin: 22px 0 8px; font-size: 18px; color: #173f47; }
+    a { color: var(--accent); text-decoration-thickness: 1px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px;
+      vertical-align: top;
+      text-align: left;
+    }
+    th { background: var(--soft); }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 15px;
+      background: #fbfcfd;
+    }
+    .tag {
+      display: inline-block;
+      font-size: 12px;
+      color: #20434a;
+      background: #e3f1f1;
+      border: 1px solid #c4dddd;
+      border-radius: 999px;
+      padding: 2px 8px;
+      margin: 4px 4px 0 0;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      color: #fff;
+      background: var(--accent2);
+      border-radius: 999px;
+      padding: 2px 8px;
+      margin-left: 6px;
+    }
+    .badge.new { background: var(--green); }
+    .note {
+      border-left: 4px solid var(--accent);
+      background: #eef8f8;
+      padding: 12px 14px;
+      margin: 12px 0;
+      color: #24494f;
+    }
+    .apa {
+      padding-left: 28px;
+      text-indent: -28px;
+      margin: 12px 0;
+    }
+    .small { color: var(--muted); font-size: 14px; }
+    footer {
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+      margin-top: 26px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>数理统计第5-9章前沿与应用文献</h1>
+    <p>围绕统计量及其分布、点估计、区间估计、假设检验、方差分析和线性回归，参考 MIT、UC Berkeley、Harvard 等公开课程页，并筛选 2023-2026 年统计学前沿与应用论文。本文件为单文件 HTML，适合直接上传雨课堂。</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>筛选说明</h2>
+      <div class="note">检索日期：2026-07-13。优先选择 JASA、Annals of Statistics、JRSS Series B、JBES、JSS 等统计学主流期刊/平台，以及能直接映射到课程第5-9章的应用论文。少量 2022 年论文作为“近年课程拓展桥梁”保留。</div>
+      <table>
+        <tr><th>课程章节</th><th>前沿对应</th><th>学生可观察的统计思想</th></tr>
+        <tr><td>统计量及其分布</td><td>高维检验统计量、conformal prediction、置信序列</td><td>统计量不只是公式，还要回答其分布、有效性和适用条件。</td></tr>
+        <tr><td>点估计</td><td>double/debiased machine learning、去偏估计、在线估计</td><td>估计量的偏差、方差、渐近正态性在高维/机器学习中仍是核心。</td></tr>
+        <tr><td>区间估计</td><td>conformal intervals、bootstrap CIs、confidence sequences</td><td>区间估计从固定样本推广到网络数据、高维回归和顺序数据。</td></tr>
+        <tr><td>假设检验</td><td>e-values、anytime-valid testing、simultaneous inference</td><td>p-value 之外还有更适合在线/多重检验的新框架。</td></tr>
+        <tr><td>方差分析</td><td>GLM-ASCA、随机试验协变量调整、实验设计数据</td><td>ANOVA 思想在高维组学、实验设计和因果估计中继续演化。</td></tr>
+        <tr><td>线性回归</td><td>高维回归、因果回归、composition regression、augmented balancing weights</td><td>线性回归仍是现代统计推断和因果推断的核心语言。</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>参考的名校课程页</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>MIT OCW 18.05</h3>
+          <p>Introduction to Probability and Statistics，覆盖统计推断、置信区间、假设检验、线性回归等基础主题。</p>
+          <p><a href="https://ocw.mit.edu/courses/18-05-introduction-to-probability-and-statistics-spring-2022/">课程页</a> <span class="badge">MIT</span></p>
+        </div>
+        <div class="card">
+          <h3>UC Berkeley STAT 201B</h3>
+          <p>高级统计入门课程，适合作为点估计、区间估计、假设检验和统计理论拓展参考。</p>
+          <p><a href="https://stat201b.berkeley.edu/fall-2024/syllabus.html">课程页</a> <span class="badge">Berkeley</span></p>
+        </div>
+        <div class="card">
+          <h3>UC Berkeley STAT 151A</h3>
+          <p>Linear Modelling: Theory and Applications，支撑线性回归、方差分析和模型诊断的课程映射。</p>
+          <p><a href="https://stat151a.berkeley.edu/fall-2025/syllabus/">课程页</a> <span class="badge">Berkeley</span></p>
+        </div>
+        <div class="card">
+          <h3>UC Berkeley STAT 215A</h3>
+          <p>Statistical Models: Theory and Application，适合连接线性模型、推断理论和现代统计模型。</p>
+          <p><a href="https://stat215a.berkeley.edu/fall-2024/syllabus.html">课程页</a> <span class="badge">Berkeley</span></p>
+        </div>
+        <div class="card">
+          <h3>Harvard Extension</h3>
+          <p>Intermediate Statistics: Methods and Modeling，覆盖 ANOVA、ANCOVA、线性/逻辑回归等应用建模主题。</p>
+          <p><a href="https://coursebrowser.dce.harvard.edu/course/intermediate-statistics-methods-and-modeling-5/">课程页</a> <span class="badge">Harvard</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>按第5-9章组织的前沿阅读</h2>
+      <h3>第5章：统计量及其分布</h3>
+      <p><strong>前沿关键词：</strong>高维检验统计量、无模型推断、conformal prediction、有限样本有效性。</p>
+      <p><span class="tag">test statistic</span><span class="tag">asymptotic distribution</span><span class="tag">high-dimensional inference</span></p>
+      <table>
+        <tr><th>推荐论文</th><th>为什么适合这一章</th></tr>
+        <tr><td>Guo et al. (2025)</td><td>构造高维无模型检验统计量，并讨论其渐近卡方分布和 FDR 控制。</td></tr>
+        <tr><td>Barber et al. (2023)</td><td>把“统计量排序/校准”的思想用于非交换数据下的预测区间。</td></tr>
+        <tr><td>Wang & Ramdas (2024)</td><td>从 t 统计量扩展到 anytime-valid t-tests 和置信序列。</td></tr>
+      </table>
+
+      <h3>第6章：点估计</h3>
+      <p><strong>前沿关键词：</strong>去偏估计、double machine learning、在线估计、高维回归。</p>
+      <p><span class="tag">debiased estimator</span><span class="tag">DML</span><span class="tag">online estimation</span></p>
+      <table>
+        <tr><th>推荐论文</th><th>为什么适合这一章</th></tr>
+        <tr><td>Colangelo & Lee (2026)</td><td>连续处理效应的点估计，展示机器学习 nuisance function 下如何恢复有效推断。</td></tr>
+        <tr><td>Chen et al. (2026)</td><td>处理隐藏混杂与过参数模型中的在线估计和推断。</td></tr>
+        <tr><td>Bach et al. (2024)</td><td>把 DML 点估计与区间估计实现为可复现实证工具。</td></tr>
+      </table>
+
+      <h3>第7章：区间估计</h3>
+      <p><strong>前沿关键词：</strong>conformal interval、bootstrap confidence interval、confidence sequence。</p>
+      <p><span class="tag">confidence interval</span><span class="tag">bootstrap</span><span class="tag">conformal prediction</span></p>
+      <table>
+        <tr><th>推荐论文</th><th>为什么适合这一章</th></tr>
+        <tr><td>Lunde et al. (2025)</td><td>网络辅助回归中的 conformal prediction，强调有限样本区间有效性。</td></tr>
+        <tr><td>Das et al. (2025)</td><td>高维惩罚回归中更高阶准确的 Bootstrap 双侧置信区间。</td></tr>
+        <tr><td>Wang & Ramdas (2024)</td><td>置信区间向“置信序列”推广，适合实时数据和连续监测。</td></tr>
+      </table>
+
+      <h3>第8章：假设检验</h3>
+      <p><strong>前沿关键词：</strong>e-values、顺序检验、anytime-valid inference、多重检验。</p>
+      <p><span class="tag">e-value</span><span class="tag">sequential testing</span><span class="tag">multiple testing</span></p>
+      <table>
+        <tr><th>推荐论文</th><th>为什么适合这一章</th></tr>
+        <tr><td>Pérez-Ortiz et al. (2024)</td><td>从群不变性出发构造 e-statistics，扩展传统假设检验。</td></tr>
+        <tr><td>Grünwald (2024)</td><td>直接讨论 e-values 如何支持数据驱动显著性水平。</td></tr>
+        <tr><td>Koning & van Meer (2026)</td><td>2026 年 JRSSB 论文，讨论如何诱导顺序检验并保持 anytime validity。</td></tr>
+        <tr><td>Sun et al. (2024)</td><td>高维混杂线性模型中的同时检验和 FDR 控制。</td></tr>
+      </table>
+
+      <h3>第9章：方差分析和线性回归</h3>
+      <p><strong>前沿关键词：</strong>ANOVA-simultaneous component analysis、线性回归作为因果推断语言、高维回归。</p>
+      <p><span class="tag">ANOVA</span><span class="tag">linear regression</span><span class="tag">experimental design</span><span class="tag">causal inference</span></p>
+      <table>
+        <tr><th>推荐论文</th><th>为什么适合这一章</th></tr>
+        <tr><td>Abegaz et al. (2025)</td><td>把 ANOVA、GLM 和 simultaneous component analysis 用于微生物组高维实验设计。</td></tr>
+        <tr><td>Zhao & Ding (2022)</td><td>随机试验中是否协变量调整，适合连接 ANOVA、线性回归和实验设计。</td></tr>
+        <tr><td>Bruns-Smith et al. (2025)</td><td>把 augmented balancing weights 表达为线性回归，是现代因果推断对回归课的好拓展。</td></tr>
+        <tr><td>Farewell et al. (2026)</td><td>最新 JRSSB 讨论论文，适合讨论回归模型解释、组合与因果含义。</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>APA 格式参考文献</h2>
+      <p class="apa">Abegaz, K. J. A., Smilde, A. K., Acharjee, A., & Timmerman, M. E. (2025). A generalized linear modeling approach to ANOVA-simultaneous component analysis for microbiome high-dimensional experimental design data. <em>Frontiers in Microbiomes, 4</em>, Article 1584516. <a href="https://doi.org/10.3389/frmbi.2025.1584516">https://doi.org/10.3389/frmbi.2025.1584516</a></p>
+      <p class="apa">Bach, P., Chernozhukov, V., Kurz, M. S., & Spindler, M. (2024). DoubleML - An object-oriented implementation of double machine learning in R. <em>Journal of Statistical Software, 108</em>(3), 1-56. <a href="https://doi.org/10.18637/jss.v108.i03">https://doi.org/10.18637/jss.v108.i03</a></p>
+      <p class="apa">Barber, R. F., Candès, E. J., Ramdas, A., & Tibshirani, R. J. (2023). Conformal prediction beyond exchangeability. <em>The Annals of Statistics, 51</em>(2), 816-845. <a href="https://doi.org/10.1214/23-AOS2276">https://doi.org/10.1214/23-AOS2276</a></p>
+      <p class="apa">Bruns-Smith, D., Dukes, O., Feller, A., & Ogburn, E. L. (2025). Augmented balancing weights as linear regression. <em>Journal of the Royal Statistical Society Series B: Statistical Methodology</em>, Article qkaf019. <a href="https://doi.org/10.1093/jrsssb/qkaf019">https://doi.org/10.1093/jrsssb/qkaf019</a></p>
+      <p class="apa">Chen, S., Feng, X., Ge, Y., Li, T., & Wu, M. (2026). Online inference under over-parameterized models with hidden confounders. <em>Journal of the Royal Statistical Society Series B: Statistical Methodology</em>, Article qkag110. <a href="https://doi.org/10.1093/jrsssb/qkag110">https://doi.org/10.1093/jrsssb/qkag110</a></p>
+      <p class="apa">Colangelo, K., & Lee, Y.-Y. (2026). Double debiased machine learning nonparametric inference with continuous treatments. <em>Journal of Business & Economic Statistics, 44</em>(1), 67-79. <a href="https://doi.org/10.1080/07350015.2025.2505487">https://doi.org/10.1080/07350015.2025.2505487</a></p>
+      <p class="apa">Das, D., Chatterjee, A., & Lahiri, S. N. (2025). Higher order accurate symmetric bootstrap confidence intervals in high dimensional penalized regression. <em>Journal of the American Statistical Association, 120</em>(551), 1645-1656. <a href="https://doi.org/10.1080/01621459.2024.2445873">https://doi.org/10.1080/01621459.2024.2445873</a></p>
+      <p class="apa">Farewell, D. M., Daniel, R. M., Stensrud, M. J., & Huitfeldt, A. (2026). Regression by composition. <em>Journal of the Royal Statistical Society Series B: Statistical Methodology</em>, Article qkag112. <a href="https://doi.org/10.1093/jrsssb/qkag112">https://doi.org/10.1093/jrsssb/qkag112</a></p>
+      <p class="apa">Grünwald, P. (2024). Beyond Neyman-Pearson: E-values enable hypothesis testing with a data-driven alpha. <em>Proceedings of the National Academy of Sciences, 121</em>(39), Article e2302098121. <a href="https://doi.org/10.1073/pnas.2302098121">https://doi.org/10.1073/pnas.2302098121</a></p>
+      <p class="apa">Guo, X., Li, R., Zhang, Z., & Zou, C. (2025). Model-free statistical inference on high-dimensional data. <em>Journal of the American Statistical Association, 120</em>(549), 186-197. <a href="https://doi.org/10.1080/01621459.2024.2310314">https://doi.org/10.1080/01621459.2024.2310314</a></p>
+      <p class="apa">Koning, N. W., & van Meer, S. (2026). Anytime validity is free: Inducing sequential tests. <em>Journal of the Royal Statistical Society Series B: Statistical Methodology</em>, Article qkag050. <a href="https://doi.org/10.1093/jrsssb/qkag050">https://doi.org/10.1093/jrsssb/qkag050</a></p>
+      <p class="apa">Lunde, R., Levina, E., & Zhu, J. (2025). Conformal prediction for network-assisted regression. <em>Journal of the American Statistical Association, 120</em>(551), 1633-1644. <a href="https://doi.org/10.1080/01621459.2025.2506198">https://doi.org/10.1080/01621459.2025.2506198</a></p>
+      <p class="apa">Pérez-Ortiz, M. F., Lardy, T., de Heide, R., & Grünwald, P. (2024). E-statistics, group invariance and anytime-valid testing. <em>The Annals of Statistics, 52</em>(4), 1410-1432. <a href="https://doi.org/10.1214/24-AOS2394">https://doi.org/10.1214/24-AOS2394</a></p>
+      <p class="apa">Sun, Y., Ma, L., & Xia, Y. (2024). A decorrelating and debiasing approach to simultaneous inference for high-dimensional confounded models. <em>Journal of the American Statistical Association, 119</em>(548), 2857-2868. <a href="https://doi.org/10.1080/01621459.2023.2283938">https://doi.org/10.1080/01621459.2023.2283938</a></p>
+      <p class="apa">Wang, H., & Ramdas, A. (2024). Anytime-valid t-tests and confidence sequences for Gaussian means with unknown variance. <em>Sequential Analysis, 43</em>(3), 307-343. <a href="https://doi.org/10.1080/07474946.2023.2272908">https://doi.org/10.1080/07474946.2023.2272908</a></p>
+      <p class="apa">Zhao, A., & Ding, P. (2022). To adjust or not to adjust? Estimating the average treatment effect in randomized experiments with missing covariates. <em>Biometrika, 109</em>(3), 799-815. <a href="https://doi.org/10.1093/biomet/asab073">https://doi.org/10.1093/biomet/asab073</a></p>
+    </section>
+
+    <section>
+      <h2>给学生的阅读建议</h2>
+      <p>建议先读每章对应的教材内容，再挑一篇前沿论文做“概念定位”：先找出论文中的统计量、估计量、置信区间或检验问题，再看作者如何处理经典假设被破坏后的推断有效性。这样可以让第5-9章不只是公式训练，而是进入现代统计研究的入口。</p>
+    </section>
+
+    <footer>单文件 HTML · Generated on 2026-07-13 · Project_005_数理统计经典阅读文献</footer>
+  </main>
+  <style>.page-qr-panel{position:fixed;right:18px;bottom:18px;z-index:9999;width:150px;padding:12px;border:1px solid #dbe4ef;border-radius:16px;background:rgba(255,255,255,.96);box-shadow:0 12px 32px rgba(15,23,42,.18);font-family:"Microsoft YaHei",sans-serif;text-align:center}.page-qr-panel img{display:block;width:126px;height:126px;margin:auto}.page-qr-panel strong{display:block;margin:6px 0 2px;font-size:13px;color:#172033}.page-qr-panel a{font-size:12px;color:#1d4ed8;text-decoration:none}@media(max-width:700px){.page-qr-panel{width:112px;padding:8px}.page-qr-panel img{width:94px;height:94px}}@media print{.page-qr-panel{position:fixed;box-shadow:none}}</style>
+  <aside class="page-qr-panel" aria-label="本页二维码"><img src="qrcodes/frontier-literature.png" alt="数理统计前沿文献二维码"><strong>扫码打开本页</strong><a href="index.html">返回资源首页</a> · <a href="qrcodes/frontier-literature.png" download>下载二维码</a></aside>
+</body>
+</html>

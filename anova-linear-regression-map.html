@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>第八章 方差分析与回归分析</title>
+  <style>
+    :root {
+      --paper: #ffffff;
+      --ink: #1f2937;
+      --muted: #667085;
+      --line: #d8d2c5;
+      --accent: #667c1f;
+      --accent-soft: #e7ecd1;
+      --accent-deep: #3f4f14;
+      --node-w: 154px;
+      --node-h: 154px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Noto Serif SC", "Source Han Serif SC", "Microsoft YaHei", serif;
+      line-height: 1.72;
+    }
+    body.graph-only {
+      background: #ffffff;
+      overflow: hidden;
+      line-height: 1;
+    }
+    header {
+      padding: 42px min(6vw, 72px) 18px;
+      border-bottom: 1px solid var(--line);
+    }
+    .eyebrow {
+      color: var(--accent);
+      font-size: 14px;
+      letter-spacing: 0;
+      font-weight: 700;
+    }
+    h1 {
+      margin: 10px 0 8px;
+      font-size: clamp(32px, 4.4vw, 60px);
+      line-height: 1.08;
+      letter-spacing: 0;
+      text-wrap: balance;
+    }
+    .subtitle {
+      margin: 0;
+      max-width: 980px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+    .source {
+      margin-top: 14px;
+      color: #7c6f64;
+      font-size: 14px;
+    }
+    main {
+      padding: 26px min(6vw, 72px) 56px;
+    }
+    .notice {
+      max-width: 1080px;
+      margin: 0 0 24px;
+      padding: 14px 18px;
+      border: 1px solid color-mix(in oklch, var(--accent) 32%, var(--line));
+      background: color-mix(in oklch, var(--accent-soft) 74%, white);
+      border-radius: 8px;
+      color: var(--accent-deep);
+      font-weight: 700;
+    }
+    .graph-wrap {
+      position: relative;
+      overflow-x: auto;
+      border-top: 2px solid var(--accent);
+      border-bottom: 1px solid var(--line);
+      padding: 24px 0 30px;
+    }
+    .graph {
+      position: relative;
+      min-width: 1180px;
+      height: 820px;
+    }
+    body.graph-only .graph {
+      width: 100vw;
+      height: 100vh;
+      min-width: 0;
+    }
+    svg.mindmap {
+      width: 100%;
+      height: 100%;
+      display: block;
+      touch-action: none;
+      user-select: none;
+    }
+    .link {
+      fill: none;
+      stroke: color-mix(in oklch, var(--accent) 58%, #9b9287);
+      stroke-width: 1.6;
+      opacity: 0.72;
+    }
+    .node-circle {
+      cursor: grab;
+      filter: drop-shadow(0 12px 18px rgba(31, 41, 55, 0.12));
+      transition: stroke-width 0.16s ease, filter 0.16s ease;
+    }
+    .node-circle:active {
+      cursor: grabbing;
+    }
+    .node-group-wrap.dragging .node-circle {
+      stroke-width: 4;
+      filter: drop-shadow(0 16px 22px rgba(31, 41, 55, 0.18));
+    }
+    .node-label {
+      font-weight: 800;
+      font-size: 15px;
+      fill: #172033;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      pointer-events: none;
+    }
+    .node-label.title {
+      font-size: 18px;
+    }
+    .node-group-text {
+      font-size: 12px;
+      fill: #475569;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      pointer-events: none;
+    }
+    .edge-label {
+      font-size: 12px;
+      fill: #736b62;
+      paint-order: stroke;
+      stroke: var(--paper);
+      stroke-width: 5px;
+      stroke-linejoin: round;
+    }
+    .summary {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.72fr) minmax(420px, 1.28fr);
+      gap: 34px;
+      margin-top: 32px;
+      align-items: start;
+    }
+    h2 {
+      margin: 0 0 14px;
+      font-size: 24px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+    .takeaways ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .takeaways li {
+      margin: 9px 0;
+    }
+    .node-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .node-list article {
+      border-bottom: 1px solid var(--line);
+      padding: 0 0 12px;
+    }
+    .node-list b {
+      display: block;
+      font-size: 15px;
+      color: var(--accent-deep);
+    }
+    .node-list span {
+      display: block;
+      margin-top: 4px;
+      color: #5f5b55;
+      font-size: 14px;
+    }
+    footer {
+      padding: 22px min(6vw, 72px) 34px;
+      border-top: 1px solid var(--line);
+      color: #7c6f64;
+      font-size: 13px;
+    }
+    @media (max-width: 820px) {
+      header { padding-top: 28px; }
+      main { padding-inline: 18px; }
+      .summary { grid-template-columns: 1fr; }
+      .node-list { grid-template-columns: 1fr; }
+      .graph { min-width: 1120px; height: 860px; }
+    }
+  </style>
+</head>
+<body class="graph-only">
+  <div id="graph" class="graph"></div>
+  <script>
+    const PURE_GRAPH = true;
+    const graphData = {"nodes": [{"id": "c8", "label": "方差分析与回归分析", "group": "中心主题", "level": 0, "brief": "本章把推断方法用于试验因素比较和变量关系建模。"}, {"id": "anova", "label": "方差分析", "group": "方差分析", "level": 1, "brief": "将总变差分解为因素效应与随机误差，用 F 检验判断均值差异。"}, {"id": "problem", "label": "问题提出", "group": "方差分析", "level": 1, "brief": "多总体均值比较不能只靠两两 t 检验，否则错误率膨胀。"}, {"id": "model", "label": "单因子模型", "group": "方差分析", "level": 2, "brief": "观测值由总体均值、因素效应和随机误差组成。"}, {"id": "ss", "label": "平方和分解", "group": "方差分析", "level": 2, "brief": "总平方和 = 组间平方和 + 组内平方和。"}, {"id": "ftest", "label": "检验方法", "group": "方差分析", "level": 2, "brief": "用均方比构造 F 统计量，判断因素效应是否显著。"}, {"id": "estimate", "label": "参数估计", "group": "方差分析", "level": 2, "brief": "估计总体均值、处理效应和误差方差。"}, {"id": "unequal", "label": "重复数不等情形", "group": "方差分析", "level": 2, "brief": "处理各水平样本量不同的单因子方差分析。"}, {"id": "multi", "label": "多重比较", "group": "多重比较", "level": 2, "brief": "在总体均值差异显著后定位哪些水平之间不同。"}, {"id": "ci", "label": "水平均值差置信区间", "group": "多重比较", "level": 2, "brief": "给出处理均值差的区间判断。"}, {"id": "tukey", "label": "重复数相等的 T 法", "group": "多重比较", "level": 2, "brief": "控制整体错误率的成对比较方法。"}, {"id": "scheffe", "label": "重复数不等的 S 法", "group": "多重比较", "level": 2, "brief": "适用于更一般线性比较的保守方法。"}, {"id": "homogeneity", "label": "方差齐性检验", "group": "诊断", "level": 2, "brief": "检查方差分析和回归模型中的等方差前提。"}, {"id": "hartley", "label": "哈特利检验", "group": "诊断", "level": 3, "brief": "基于最大样本方差与最小样本方差之比。"}, {"id": "bartlett", "label": "巴特利特检验", "group": "诊断", "level": 3, "brief": "用于多总体方差齐性检验。"}, {"id": "reg", "label": "一元线性回归", "group": "回归分析", "level": 1, "brief": "用线性模型描述两个变量之间的数量关系。"}, {"id": "relation", "label": "变量间两类关系", "group": "回归分析", "level": 2, "brief": "区分函数关系与相关关系，为回归建模定性。"}, {"id": "regmodel", "label": "线性回归模型", "group": "回归分析", "level": 2, "brief": "响应变量由线性均值函数和随机误差组成。"}, {"id": "ls", "label": "最小二乘估计", "group": "回归分析", "level": 2, "brief": "通过最小化残差平方和估计回归系数。"}, {"id": "sig", "label": "回归方程显著性检验", "group": "回归分析", "level": 2, "brief": "检验自变量是否对响应变量有显著线性解释力。"}, {"id": "predict", "label": "估计与预测", "group": "回归分析", "level": 2, "brief": "给出均值响应估计区间和新观测预测区间。"}, {"id": "nonlinear", "label": "可化为线性的曲线回归", "group": "曲线回归", "level": 2, "brief": "通过变量变换把部分非线性函数转化为线性回归。"}, {"id": "compare", "label": "曲线回归方程比较", "group": "曲线回归", "level": 3, "brief": "比较不同函数形式的拟合效果和解释性。"}], "edges": [{"source": "c8", "target": "anova", "label": "多组比较"}, {"source": "anova", "target": "problem", "label": "动机"}, {"source": "anova", "target": "model", "label": "建模"}, {"source": "model", "target": "ss", "label": "分解"}, {"source": "ss", "target": "ftest", "label": "构造"}, {"source": "model", "target": "estimate", "label": "估计"}, {"source": "model", "target": "unequal", "label": "扩展"}, {"source": "ftest", "target": "multi", "label": "事后分析"}, {"source": "multi", "target": "ci", "label": "区间"}, {"source": "multi", "target": "tukey", "label": "方法"}, {"source": "multi", "target": "scheffe", "label": "方法"}, {"source": "anova", "target": "homogeneity", "label": "前提"}, {"source": "homogeneity", "target": "hartley", "label": "方法"}, {"source": "homogeneity", "target": "bartlett", "label": "方法"}, {"source": "c8", "target": "reg", "label": "变量关系"}, {"source": "reg", "target": "relation", "label": "辨别"}, {"source": "reg", "target": "regmodel", "label": "建模"}, {"source": "regmodel", "target": "ls", "label": "估计"}, {"source": "ls", "target": "sig", "label": "检验"}, {"source": "ls", "target": "predict", "label": "应用"}, {"source": "reg", "target": "nonlinear", "label": "扩展"}, {"source": "nonlinear", "target": "compare", "label": "评价"}, {"source": "ftest", "target": "sig", "label": "共享 F 思想"}, {"source": "homogeneity", "target": "regmodel", "label": "诊断"}]};
+    const graphEl = document.getElementById("graph");
+    const WIDTH = PURE_GRAPH ? 1280 : 1180;
+    const macaronPalette = [
+      ["#ffd6e0", "#be5f73"],
+      ["#ffe0c2", "#b7793d"],
+      ["#fff1b8", "#9a7a16"],
+      ["#d9f3d1", "#5f8d53"],
+      ["#ccefe8", "#347f76"],
+      ["#d7ecff", "#4b79a8"],
+      ["#e6dcff", "#7a63ad"],
+      ["#f8d9f0", "#a15c8d"],
+      ["#f3e7d4", "#8c7050"],
+      ["#dce8dc", "#5e7d62"]
+    ];
+    const levels = new Map();
+    graphData.nodes.forEach(node => {
+      if (!levels.has(node.level)) levels.set(node.level, []);
+      levels.get(node.level).push(node);
+    });
+    const maxLevel = Math.max(...graphData.nodes.map(n => n.level));
+    const largestLevelCount = Math.max(...Array.from(levels.values()).map(items => items.length));
+    const HEIGHT = PURE_GRAPH ? Math.max(900, 160 + largestLevelCount * 136) : Math.max(820, 160 + largestLevelCount * 136);
+    graphEl.style.height = PURE_GRAPH ? "100vh" : `${HEIGHT}px`;
+    const titleNode = node => node.level === 0 || node.group === "章节";
+    const nodes = graphData.nodes.map((node, index) => {
+      const levelItems = levels.get(node.level) || [];
+      const levelIndex = levelItems.findIndex(item => item.id === node.id);
+      const gap = levelItems.length <= 4 ? 172 : levelItems.length <= 6 ? 154 : 132;
+      const total = (levelItems.length - 1) * gap;
+      const tone = PURE_GRAPH ? ["#dff1ff", "#5f8fb8"] : macaronPalette[(node.level * 5 + levelIndex) % macaronPalette.length];
+      return {
+        ...node,
+        index,
+        levelIndex,
+        r: titleNode(node) ? (node.level === 0 ? 94 : 82) : 62,
+        x: 132 + node.level * (PURE_GRAPH ? 302 : 286),
+        y: HEIGHT / 2 - total / 2 + levelIndex * gap,
+        vx: 0,
+        vy: 0,
+        anchorX: 132 + node.level * (PURE_GRAPH ? 302 : 286),
+        anchorY: HEIGHT / 2 - total / 2 + levelIndex * gap,
+        fill: tone[0],
+        tone: tone[1],
+        pinned: false
+      };
+    });
+    const nodeById = new Map(nodes.map(node => [node.id, node]));
+    const links = graphData.edges
+      .map(edge => ({ ...edge, source: nodeById.get(edge.source), target: nodeById.get(edge.target) }))
+      .filter(edge => edge.source && edge.target);
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("class", "mindmap");
+    svg.setAttribute("viewBox", `0 0 ${WIDTH} ${HEIGHT}`);
+    svg.setAttribute("role", "img");
+    svg.setAttribute("aria-label", "可拖动知识图谱");
+    const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+    defs.innerHTML = `<marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="var(--accent)"/></marker>`;
+    svg.appendChild(defs);
+    const linkLayer = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    const labelLayer = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    const nodeLayer = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    svg.append(linkLayer, labelLayer, nodeLayer);
+    const linkEls = links.map(link => {
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("class", "link");
+      path.setAttribute("marker-end", "url(#arrow)");
+      linkLayer.appendChild(path);
+      return path;
+    });
+    const labelEls = links.map(link => {
+      if (link.label && !PURE_GRAPH) {
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("class", "edge-label");
+        text.setAttribute("text-anchor", "middle");
+        text.textContent = link.label;
+        labelLayer.appendChild(text);
+        return text;
+      }
+      return null;
+    });
+    const nodeEls = nodes.map(node => {
+      const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      group.setAttribute("class", "node-group-wrap");
+      group.setAttribute("tabindex", "0");
+      group.setAttribute("aria-label", `${node.label}：${node.brief}`);
+      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      circle.setAttribute("class", "node-circle");
+      circle.setAttribute("r", node.r);
+      circle.setAttribute("fill", node.fill);
+      circle.setAttribute("stroke", node.tone);
+      circle.setAttribute("stroke-width", titleNode(node) ? "2.6" : "2");
+      group.appendChild(circle);
+
+      const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      label.setAttribute("class", "node-label" + (titleNode(node) ? " title" : ""));
+      splitLabel(node.label, titleNode(node) ? 7 : 6).forEach((line, index, lines) => {
+        const tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+        tspan.setAttribute("x", "0");
+        tspan.setAttribute("dy", index === 0 ? `${-(lines.length - 1) * 10 - 7}` : "20");
+        tspan.textContent = line;
+        label.appendChild(tspan);
+      });
+      group.appendChild(label);
+
+      const groupText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      groupText.setAttribute("class", "node-group-text");
+      groupText.setAttribute("y", titleNode(node) ? 35 : 30);
+      groupText.textContent = node.group;
+      group.appendChild(groupText);
+
+      group.addEventListener("pointerdown", event => startDrag(event, node, group));
+      group.addEventListener("dblclick", () => { node.pinned = false; });
+      nodeLayer.appendChild(group);
+      return group;
+    });
+    graphEl.appendChild(svg);
+
+    let dragging = null;
+    function startDrag(event, node, element) {
+      dragging = { node, element, pointerId: event.pointerId };
+      node.pinned = true;
+      node.vx = 0;
+      node.vy = 0;
+      element.classList.add("dragging");
+      element.setPointerCapture(event.pointerId);
+      event.preventDefault();
+    }
+    svg.addEventListener("pointermove", event => {
+      if (!dragging) return;
+      const point = svg.createSVGPoint();
+      point.x = event.clientX;
+      point.y = event.clientY;
+      const svgPoint = point.matrixTransform(svg.getScreenCTM().inverse());
+      dragging.node.x = clamp(svgPoint.x, dragging.node.r + 8, WIDTH - dragging.node.r - 8);
+      dragging.node.y = clamp(svgPoint.y, dragging.node.r + 8, HEIGHT - dragging.node.r - 8);
+      renderGraph();
+    });
+    svg.addEventListener("pointerup", endDrag);
+    svg.addEventListener("pointercancel", endDrag);
+
+    function endDrag(event) {
+      if (!dragging) return;
+      dragging.element.classList.remove("dragging");
+      try { dragging.element.releasePointerCapture(dragging.pointerId); } catch (_) {}
+      dragging = null;
+    }
+
+    function tick() {
+      for (const link of links) {
+        const dx = link.target.x - link.source.x;
+        const dy = link.target.y - link.source.y;
+        const dist = Math.max(1, Math.hypot(dx, dy));
+        const desired = link.source.r + link.target.r + 112;
+        const force = (dist - desired) * 0.004;
+        const fx = dx / dist * force;
+        const fy = dy / dist * force;
+        if (!link.source.pinned) { link.source.vx += fx; link.source.vy += fy; }
+        if (!link.target.pinned) { link.target.vx -= fx; link.target.vy -= fy; }
+      }
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const a = nodes[i];
+          const b = nodes[j];
+          const dx = b.x - a.x;
+          const dy = b.y - a.y;
+          const dist = Math.max(1, Math.hypot(dx, dy));
+          const minDist = a.r + b.r + 18;
+          const overlap = minDist - dist;
+          const push = overlap > 0 ? overlap * 0.018 : 46 / (dist * dist);
+          const fx = dx / dist * push;
+          const fy = dy / dist * push;
+          if (!a.pinned) { a.vx -= fx; a.vy -= fy; }
+          if (!b.pinned) { b.vx += fx; b.vy += fy; }
+        }
+      }
+      nodes.forEach(node => {
+        if (!node.pinned) {
+          node.vx += (node.anchorX - node.x) * 0.006;
+          node.vy += (node.anchorY - node.y) * 0.006;
+          node.vx *= 0.84;
+          node.vy *= 0.84;
+          node.x = clamp(node.x + node.vx, node.r + 8, WIDTH - node.r - 8);
+          node.y = clamp(node.y + node.vy, node.r + 8, HEIGHT - node.r - 8);
+        }
+      });
+      renderGraph();
+      requestAnimationFrame(tick);
+    }
+
+    function renderGraph() {
+      nodeEls.forEach((element, index) => {
+        const node = nodes[index];
+        element.setAttribute("transform", `translate(${node.x},${node.y})`);
+      });
+      links.forEach((link, index) => {
+        const dx = link.target.x - link.source.x;
+        const dy = link.target.y - link.source.y;
+        const dist = Math.max(1, Math.hypot(dx, dy));
+        const sx = link.source.x + dx / dist * (link.source.r + 4);
+        const sy = link.source.y + dy / dist * (link.source.r + 4);
+        const tx = link.target.x - dx / dist * (link.target.r + 9);
+        const ty = link.target.y - dy / dist * (link.target.r + 9);
+        const curve = Math.min(96, Math.max(34, dist * 0.28));
+        const mx = (sx + tx) / 2;
+        const my = (sy + ty) / 2;
+        linkEls[index].setAttribute("d", `M ${sx} ${sy} Q ${mx} ${my - curve * 0.08} ${tx} ${ty}`);
+        const label = labelEls[index];
+        if (label) {
+          label.setAttribute("x", mx);
+          label.setAttribute("y", my - 7);
+        }
+      });
+    }
+
+    function splitLabel(value, maxChars) {
+      const text = String(value);
+      if (text.length <= maxChars) return [text];
+      const lines = [];
+      let current = "";
+      for (const char of text) {
+        current += char;
+        if (current.length >= maxChars) {
+          lines.push(current);
+          current = "";
+        }
+      }
+      if (current) lines.push(current);
+      return lines.slice(0, 3);
+    }
+
+    function clamp(value, min, max) {
+      return Math.min(max, Math.max(min, value));
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, ch => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[ch]));
+    }
+    renderGraph();
+    requestAnimationFrame(tick);
+  </script>
+  <style>.page-qr-panel{position:fixed;right:18px;bottom:18px;z-index:9999;width:150px;padding:12px;border:1px solid #dbe4ef;border-radius:16px;background:rgba(255,255,255,.96);box-shadow:0 12px 32px rgba(15,23,42,.18);font-family:"Microsoft YaHei",sans-serif;text-align:center}.page-qr-panel img{display:block;width:126px;height:126px;margin:auto}.page-qr-panel strong{display:block;margin:6px 0 2px;font-size:13px;color:#172033}.page-qr-panel a{font-size:12px;color:#1d4ed8;text-decoration:none}@media(max-width:700px){.page-qr-panel{width:112px;padding:8px}.page-qr-panel img{width:94px;height:94px}}@media print{.page-qr-panel{position:fixed;box-shadow:none}}</style>
+  <aside class="page-qr-panel" aria-label="本页二维码"><img src="qrcodes/anova-linear-regression-map.png" alt="方差分析与线性回归知识图谱二维码"><strong>扫码打开本页</strong><a href="index.html">返回资源首页</a> · <a href="qrcodes/anova-linear-regression-map.png" download>下载二维码</a></aside>
+</body>
+</html>

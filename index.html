@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="概率论与数理统计课程知识图谱、经典阅读、前沿文献与课程思政教学资源。">
+  <title>概率论与数理统计知识图谱</title>
+  <style>
+    :root { color-scheme: light; --ink:#172033; --muted:#64748b; --line:#dbe4ef; --paper:#fff; --blue:#1d4ed8; --blue-soft:#eaf2ff; --green:#047857; }
+    * { box-sizing: border-box; }
+    body { margin:0; color:var(--ink); background:linear-gradient(145deg,#eef5ff 0%,#f8fafc 46%,#eefbf7 100%); font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif; line-height:1.65; }
+    .wrap { width:min(1120px,calc(100% - 32px)); margin:auto; padding:64px 0 48px; }
+    header { padding:44px; border:1px solid rgba(255,255,255,.85); border-radius:28px; color:#fff; background:linear-gradient(125deg,#143b8f,#2563eb 60%,#0f766e); box-shadow:0 22px 60px rgba(30,64,175,.2); }
+    .eyebrow { margin:0 0 10px; font-size:.88rem; font-weight:700; letter-spacing:.13em; opacity:.82; }
+    h1 { margin:0; font-size:clamp(2rem,5vw,3.55rem); line-height:1.15; letter-spacing:-.035em; }
+    header p { max-width:760px; margin:18px 0 0; font-size:1.08rem; opacity:.9; }
+    .section-title { display:flex; align-items:end; justify-content:space-between; gap:16px; margin:42px 2px 18px; }
+    h2 { margin:0; font-size:1.45rem; }
+    .section-title p { margin:0; color:var(--muted); font-size:.94rem; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+    .card { position:relative; display:block; min-height:176px; padding:24px 146px 24px 24px; border:1px solid var(--line); border-radius:20px; color:inherit; background:rgba(255,255,255,.9); text-decoration:none; box-shadow:0 8px 30px rgba(15,23,42,.06); transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease; }
+    .card:hover,.card:focus-visible { transform:translateY(-4px); border-color:#93b4f8; box-shadow:0 16px 35px rgba(30,64,175,.12); outline:none; }
+    .tag { display:inline-block; margin-bottom:14px; padding:4px 10px; border-radius:999px; color:var(--blue); background:var(--blue-soft); font-size:.78rem; font-weight:700; }
+    .tag.reading { color:var(--green); background:#e8f7f1; }
+    h3 { margin:0 0 8px; font-size:1.18rem; }
+    .card p { margin:0; color:var(--muted); font-size:.94rem; }
+    .card-qr { position:absolute; top:24px; right:24px; width:98px; height:98px; padding:6px; border:1px solid var(--line); border-radius:12px; background:#fff; }
+    .qr-label { position:absolute; right:24px; bottom:20px; width:98px; color:var(--muted); text-align:center; font-size:.72rem; }
+    footer { margin-top:34px; padding-top:22px; border-top:1px solid var(--line); color:var(--muted); text-align:center; font-size:.88rem; }
+    @media (max-width:720px) { .wrap{padding-top:24px}.grid{grid-template-columns:1fr}header{padding:30px 24px;border-radius:22px}.section-title{align-items:start;flex-direction:column}.card{min-height:170px;padding-right:132px}.card-qr{right:18px;width:92px;height:92px}.qr-label{right:15px;width:98px} }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <p class="eyebrow">COURSE KNOWLEDGE HUB</p>
+      <h1>概率论与数理统计<br>知识图谱</h1>
+      <p>汇集课程结构、核心章节、经典阅读、前沿文献与课程思政资源，支持课堂教学、课前导学和自主复习。</p>
+    </header>
+
+    <div class="section-title"><h2>课程与章节图谱</h2><p>点击卡片进入交互式页面</p></div>
+    <section class="grid" aria-label="课程与章节图谱">
+      <a class="card" href="course-position-map.html"><span class="tag">课程导航</span><h3>数理统计课程地位知识图谱</h3><p>理解课程定位、先修关系、能力目标及后续应用方向。</p><img class="card-qr" src="qrcodes/course-position-map.png" alt="课程地位知识图谱二维码"><span class="qr-label">扫码直达</span></a>
+      <a class="card" href="point-estimation.html"><span class="tag">第六章</span><h3>点估计</h3><p>梳理矩估计、最大似然估计、估计量评价等核心知识。</p><img class="card-qr" src="qrcodes/point-estimation.png" alt="点估计二维码"><span class="qr-label">扫码直达</span></a>
+      <a class="card" href="interval-estimation.html"><span class="tag">第六章</span><h3>区间估计</h3><p>连接置信区间、枢轴量及典型总体参数区间估计。</p><img class="card-qr" src="qrcodes/interval-estimation.png" alt="区间估计二维码"><span class="qr-label">扫码直达</span></a>
+      <a class="card" href="hypothesis-testing-map.html"><span class="tag">第七章</span><h3>假设检验</h3><p>呈现检验思想、两类错误、显著性水平与常用检验方法。</p><img class="card-qr" src="qrcodes/hypothesis-testing-map.png" alt="假设检验二维码"><span class="qr-label">扫码直达</span></a>
+      <a class="card" href="anova-linear-regression-map.html"><span class="tag">第八章</span><h3>方差分析与线性回归</h3><p>贯通方差分解、F 检验、回归建模及模型诊断。</p><img class="card-qr" src="qrcodes/anova-linear-regression-map.png" alt="方差分析与线性回归二维码"><span class="qr-label">扫码直达</span></a>
+      <a class="card" href="ideology-elements-map.html"><span class="tag">育人融合</span><h3>概率统计课程思政元素图谱</h3><p>将统计思想、科学精神、社会责任与课堂内容有机融合。</p><img class="card-qr" src="qrcodes/ideology-elements-map.png" alt="课程思政元素图谱二维码"><span class="qr-label">扫码直达</span></a>
+    </section>
+
+    <div class="section-title"><h2>阅读与拓展</h2><p>从经典理论走向学科前沿</p></div>
+    <section class="grid" aria-label="阅读与拓展">
+      <a class="card" href="classic-readings.html"><span class="tag reading">经典阅读</span><h3>数理统计课程经典文献</h3><p>收录奠基性论文、经典教材和高水平课程资源入口。</p><img class="card-qr" src="qrcodes/classic-readings.png" alt="经典阅读文献二维码"><span class="qr-label">扫码直达</span></a>
+      <a class="card" href="frontier-literature.html"><span class="tag reading">前沿拓展</span><h3>数理统计前沿与应用文献</h3><p>连接现代统计方法、最新研究论文与国内外课程资源。</p><img class="card-qr" src="qrcodes/frontier-literature.png" alt="前沿文献二维码"><span class="qr-label">扫码直达</span></a>
+    </section>
+
+    <footer>用于课程教学与学术交流 · 外部文献版权归原作者及出版机构所有</footer>
+  </main>
+</body>
+</html>

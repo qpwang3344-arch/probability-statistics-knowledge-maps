@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>第五章 统计量及其分布</title>
+  <style>
+    :root {
+      --paper: #ffffff;
+      --ink: #1f2937;
+      --muted: #667085;
+      --line: #d8d2c5;
+      --accent: #0f766e;
+      --accent-soft: #d9f0ed;
+      --accent-deep: #134e4a;
+      --node-w: 154px;
+      --node-h: 154px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Noto Serif SC", "Source Han Serif SC", "Microsoft YaHei", serif;
+      line-height: 1.72;
+    }
+    body.graph-only {
+      background: #ffffff;
+      overflow: hidden;
+      line-height: 1;
+    }
+    header {
+      padding: 42px min(6vw, 72px) 18px;
+      border-bottom: 1px solid var(--line);
+    }
+    .eyebrow {
+      color: var(--accent);
+      font-size: 14px;
+      letter-spacing: 0;
+      font-weight: 700;
+    }
+    h1 {
+      margin: 10px 0 8px;
+      font-size: clamp(32px, 4.4vw, 60px);
+      line-height: 1.08;
+      letter-spacing: 0;
+      text-wrap: balance;
+    }
+    .subtitle {
+      margin: 0;
+      max-width: 980px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+    .source {
+      margin-top: 14px;
+      color: #7c6f64;
+      font-size: 14px;
+    }
+    main {
+      padding: 26px min(6vw, 72px) 56px;
+    }
+    .notice {
+      max-width: 1080px;
+      margin: 0 0 24px;
+      padding: 14px 18px;
+      border: 1px solid color-mix(in oklch, var(--accent) 32%, var(--line));
+      background: color-mix(in oklch, var(--accent-soft) 74%, white);
+      border-radius: 8px;
+      color: var(--accent-deep);
+      font-weight: 700;
+    }
+    .graph-wrap {
+      position: relative;
+      overflow-x: auto;
+      border-top: 2px solid var(--accent);
+      border-bottom: 1px solid var(--line);
+      padding: 24px 0 30px;
+    }
+    .graph {
+      position: relative;
+      min-width: 1180px;
+      height: 820px;
+    }
+    body.graph-only .graph {
+      width: 100vw;
+      height: 100vh;
+      min-width: 0;
+    }
+    svg.mindmap {
+      width: 100%;
+      height: 100%;
+      display: block;
+      touch-action: none;
+      user-select: none;
+    }
+    .link {
+      fill: none;
+      stroke: color-mix(in oklch, var(--accent) 58%, #9b9287);
+      stroke-width: 1.6;
+      opacity: 0.72;
+    }
+    .node-circle {
+      cursor: grab;
+      filter: drop-shadow(0 12px 18px rgba(31, 41, 55, 0.12));
+      transition: stroke-width 0.16s ease, filter 0.16s ease;
+    }
+    .node-circle:active {
+      cursor: grabbing;
+    }
+    .node-group-wrap.dragging .node-circle {
+      stroke-width: 4;
+      filter: drop-shadow(0 16px 22px rgba(31, 41, 55, 0.18));
+    }
+    .node-label {
+      font-weight: 800;
+      font-size: 15px;
+      fill: #172033;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      pointer-events: none;
+    }
+    .node-label.title {
+      font-size: 18px;
+    }
+    .node-group-text {
+      font-size: 12px;
+      fill: #475569;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      pointer-events: none;
+    }
+    .edge-label {
+      font-size: 12px;
+      fill: #736b62;
+      paint-order: stroke;
+      stroke: var(--paper);
+      stroke-width: 5px;
+      stroke-linejoin: round;
+    }
+    .summary {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.72fr) minmax(420px, 1.28fr);
+      gap: 34px;
+      margin-top: 32px;
+      align-items: start;
+    }
+    h2 {
+      margin: 0 0 14px;
+      font-size: 24px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+    .takeaways ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .takeaways li {
+      margin: 9px 0;
+    }
+    .node-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .node-list article {
+      border-bottom: 1px solid var(--line);
+      padding: 0 0 12px;
+    }
+    .node-list b {
+      display: block;
+      font-size: 15px;
+      color: var(--accent-deep);
+    }
+    .node-list span {
+      display: block;
+      margin-top: 4px;
+      color: #5f5b55;
+      font-size: 14px;
+    }
+    footer {
+      padding: 22px min(6vw, 72px) 34px;
+      border-top: 1px solid var(--line);
+      color: #7c6f64;
+      font-size: 13px;
+    }
+    @media (max-width: 820px) {
+      header { padding-top: 28px; }
+      main { padding-inline: 18px; }
+      .summary { grid-template-columns: 1fr; }
+      .node-list { grid-template-columns: 1fr; }
+      .graph { min-width: 1120px; height: 860px; }
+    }
+  </style>
+</head>
+<body class="graph-only">
+  <div id="graph" class="graph"></div>
+  <script>
+    const PURE_GRAPH = true;
+    const graphData = {"nodes": [{"id": "c5", "label": "统计量及其分布", "group": "中心主题", "level": 0, "brief": "本章把前四章的概率模型转化为统计推断所需的样本语言。"}, {"id": "pop", "label": "总体与个体", "group": "总体样本", "level": 1, "brief": "总体是研究对象全体，个体是总体成员；统计问题从界定总体开始。"}, {"id": "sample", "label": "样本", "group": "总体样本", "level": 1, "brief": "来自总体的观测构成样本，常用独立同分布样本作为基本抽样模型。"}, {"id": "edf", "label": "经验分布函数", "group": "整理显示", "level": 1, "brief": "用样本数据近似总体分布，是从数据到分布图像的第一步。"}, {"id": "freq", "label": "频数频率表", "group": "整理显示", "level": 1, "brief": "将原始数据按组整理，显示集中、离散和分布形态。"}, {"id": "plot", "label": "图形显示", "group": "整理显示", "level": 1, "brief": "直方图、茎叶图、箱线图等帮助识别分布结构与异常值。"}, {"id": "stat", "label": "统计量", "group": "统计量", "level": 2, "brief": "不含未知参数的样本函数，是估计、检验和建模的基本载体。"}, {"id": "sampling", "label": "抽样分布", "group": "统计量", "level": 2, "brief": "统计量作为随机变量的分布，决定推断的不确定性。"}, {"id": "mean", "label": "样本均值", "group": "常用统计量", "level": 2, "brief": "刻画位置中心；在正态总体和大样本中具有核心地位。"}, {"id": "var", "label": "样本方差与标准差", "group": "常用统计量", "level": 2, "brief": "刻画离散程度，是构造卡方、t、F 分布的重要入口。"}, {"id": "moments", "label": "样本矩、偏度、峰度", "group": "常用统计量", "level": 2, "brief": "用样本矩描述分布的中心、离散、偏斜和尾厚。"}, {"id": "order", "label": "次序统计量", "group": "常用统计量", "level": 2, "brief": "由样本排序得到，服务于分位数、中位数和非参数方法。"}, {"id": "quantile", "label": "分位数与中位数", "group": "常用统计量", "level": 2, "brief": "刻画位置与分布切点，对异常值更稳健。"}, {"id": "five", "label": "五数概括与箱线图", "group": "常用统计量", "level": 2, "brief": "最小值、下四分位数、中位数、上四分位数、最大值形成稳健摘要。"}, {"id": "chisq", "label": "χ² 分布", "group": "三大分布", "level": 3, "brief": "正态样本方差的核心分布，支撑方差推断和拟合优度检验。"}, {"id": "tdist", "label": "t 分布", "group": "三大分布", "level": 3, "brief": "均值推断中用样本方差替代总体方差后出现。"}, {"id": "fdist", "label": "F 分布", "group": "三大分布", "level": 3, "brief": "两个方差型统计量之比的分布，支撑方差分析与方差比较。"}, {"id": "sufficient", "label": "充分统计量", "group": "充分性", "level": 3, "brief": "在不损失参数信息的前提下压缩样本。"}, {"id": "factor", "label": "因子分解定理", "group": "充分性", "level": 3, "brief": "判别充分统计量的常用工具，把似然函数分解为含参数部分和无关部分。"}], "edges": [{"source": "c5", "target": "pop", "label": "界定对象"}, {"source": "c5", "target": "sample", "label": "获得数据"}, {"source": "sample", "target": "edf", "label": "整理为"}, {"source": "sample", "target": "freq", "label": "整理为"}, {"source": "sample", "target": "plot", "label": "显示为"}, {"source": "sample", "target": "stat", "label": "构造"}, {"source": "stat", "target": "sampling", "label": "诱导"}, {"source": "stat", "target": "mean", "label": "典型"}, {"source": "stat", "target": "var", "label": "典型"}, {"source": "stat", "target": "moments", "label": "典型"}, {"source": "stat", "target": "order", "label": "典型"}, {"source": "order", "target": "quantile", "label": "产生"}, {"source": "quantile", "target": "five", "label": "汇总为"}, {"source": "var", "target": "chisq", "label": "正态样本"}, {"source": "mean", "target": "tdist", "label": "标准化"}, {"source": "var", "target": "fdist", "label": "方差比"}, {"source": "stat", "target": "sufficient", "label": "信息压缩"}, {"source": "sufficient", "target": "factor", "label": "判别"}, {"source": "chisq", "target": "tdist", "label": "共同支撑"}, {"source": "chisq", "target": "fdist", "label": "共同支撑"}]};
+    const graphEl = document.getElementById("graph");
+    const WIDTH = PURE_GRAPH ? 1280 : 1180;
+    const macaronPalette = [
+      ["#ffd6e0", "#be5f73"],
+      ["#ffe0c2", "#b7793d"],
+      ["#fff1b8", "#9a7a16"],
+      ["#d9f3d1", "#5f8d53"],
+      ["#ccefe8", "#347f76"],
+      ["#d7ecff", "#4b79a8"],
+      ["#e6dcff", "#7a63ad"],
+      ["#f8d9f0", "#a15c8d"],
+      ["#f3e7d4", "#8c7050"],
+      ["#dce8dc", "#5e7d62"]
+    ];
+    const levels = new Map();
+    graphData.nodes.forEach(node => {
+      if (!levels.has(node.level)) levels.set(node.level, []);
+      levels.get(node.level).push(node);
+    });
+    const maxLevel = Math.max(...graphData.nodes.map(n => n.level));
+    const largestLevelCount = Math.max(...Array.from(levels.values()).map(items => items.length));
+    const HEIGHT = PURE_GRAPH ? Math.max(900, 160 + largestLevelCount * 136) : Math.max(820, 160 + largestLevelCount * 136);
+    graphEl.style.height = PURE_GRAPH ? "100vh" : `${HEIGHT}px`;
+    const titleNode = node => node.level === 0 || node.group === "章节";
+    const nodes = graphData.nodes.map((node, index) => {
+      const levelItems = levels.get(node.level) || [];
+      const levelIndex = levelItems.findIndex(item => item.id === node.id);
+      const gap = levelItems.length <= 4 ? 172 : levelItems.length <= 6 ? 154 : 132;
+      const total = (levelItems.length - 1) * gap;
+      const tone = PURE_GRAPH ? ["#dff1ff", "#5f8fb8"] : macaronPalette[(node.level * 5 + levelIndex) % macaronPalette.length];
+      return {
+        ...node,
+        index,
+        levelIndex,
+        r: titleNode(node) ? (node.level === 0 ? 94 : 82) : 62,
+        x: 132 + node.level * (PURE_GRAPH ? 302 : 286),
+        y: HEIGHT / 2 - total / 2 + levelIndex * gap,
+        vx: 0,
+        vy: 0,
+        anchorX: 132 + node.level * (PURE_GRAPH ? 302 : 286),
+        anchorY: HEIGHT / 2 - total / 2 + levelIndex * gap,
+        fill: tone[0],
+        tone: tone[1],
+        pinned: false
+      };
+    });
+    const nodeById = new Map(nodes.map(node => [node.id, node]));
+    const links = graphData.edges
+      .map(edge => ({ ...edge, source: nodeById.get(edge.source), target: nodeById.get(edge.target) }))
+      .filter(edge => edge.source && edge.target);
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("class", "mindmap");
+    svg.setAttribute("viewBox", `0 0 ${WIDTH} ${HEIGHT}`);
+    svg.setAttribute("role", "img");
+    svg.setAttribute("aria-label", "可拖动知识图谱");
+    const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+    defs.innerHTML = `<marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="var(--accent)"/></marker>`;
+    svg.appendChild(defs);
+    const linkLayer = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    const labelLayer = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    const nodeLayer = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    svg.append(linkLayer, labelLayer, nodeLayer);
+    const linkEls = links.map(link => {
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("class", "link");
+      path.setAttribute("marker-end", "url(#arrow)");
+      linkLayer.appendChild(path);
+      return path;
+    });
+    const labelEls = links.map(link => {
+      if (link.label && !PURE_GRAPH) {
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("class", "edge-label");
+        text.setAttribute("text-anchor", "middle");
+        text.textContent = link.label;
+        labelLayer.appendChild(text);
+        return text;
+      }
+      return null;
+    });
+    const nodeEls = nodes.map(node => {
+      const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      group.setAttribute("class", "node-group-wrap");
+      group.setAttribute("tabindex", "0");
+      group.setAttribute("aria-label", `${node.label}：${node.brief}`);
+      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      circle.setAttribute("class", "node-circle");
+      circle.setAttribute("r", node.r);
+      circle.setAttribute("fill", node.fill);
+      circle.setAttribute("stroke", node.tone);
+      circle.setAttribute("stroke-width", titleNode(node) ? "2.6" : "2");
+      group.appendChild(circle);
+
+      const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      label.setAttribute("class", "node-label" + (titleNode(node) ? " title" : ""));
+      splitLabel(node.label, titleNode(node) ? 7 : 6).forEach((line, index, lines) => {
+        const tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+        tspan.setAttribute("x", "0");
+        tspan.setAttribute("dy", index === 0 ? `${-(lines.length - 1) * 10 - 7}` : "20");
+        tspan.textContent = line;
+        label.appendChild(tspan);
+      });
+      group.appendChild(label);
+
+      const groupText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      groupText.setAttribute("class", "node-group-text");
+      groupText.setAttribute("y", titleNode(node) ? 35 : 30);
+      groupText.textContent = node.group;
+      group.appendChild(groupText);
+
+      group.addEventListener("pointerdown", event => startDrag(event, node, group));
+      group.addEventListener("dblclick", () => { node.pinned = false; });
+      nodeLayer.appendChild(group);
+      return group;
+    });
+    graphEl.appendChild(svg);
+
+    let dragging = null;
+    function startDrag(event, node, element) {
+      dragging = { node, element, pointerId: event.pointerId };
+      node.pinned = true;
+      node.vx = 0;
+      node.vy = 0;
+      element.classList.add("dragging");
+      element.setPointerCapture(event.pointerId);
+      event.preventDefault();
+    }
+    svg.addEventListener("pointermove", event => {
+      if (!dragging) return;
+      const point = svg.createSVGPoint();
+      point.x = event.clientX;
+      point.y = event.clientY;
+      const svgPoint = point.matrixTransform(svg.getScreenCTM().inverse());
+      dragging.node.x = clamp(svgPoint.x, dragging.node.r + 8, WIDTH - dragging.node.r - 8);
+      dragging.node.y = clamp(svgPoint.y, dragging.node.r + 8, HEIGHT - dragging.node.r - 8);
+      renderGraph();
+    });
+    svg.addEventListener("pointerup", endDrag);
+    svg.addEventListener("pointercancel", endDrag);
+
+    function endDrag(event) {
+      if (!dragging) return;
+      dragging.element.classList.remove("dragging");
+      try { dragging.element.releasePointerCapture(dragging.pointerId); } catch (_) {}
+      dragging = null;
+    }
+
+    function tick() {
+      for (const link of links) {
+        const dx = link.target.x - link.source.x;
+        const dy = link.target.y - link.source.y;
+        const dist = Math.max(1, Math.hypot(dx, dy));
+        const desired = link.source.r + link.target.r + 112;
+        const force = (dist - desired) * 0.004;
+        const fx = dx / dist * force;
+        const fy = dy / dist * force;
+        if (!link.source.pinned) { link.source.vx += fx; link.source.vy += fy; }
+        if (!link.target.pinned) { link.target.vx -= fx; link.target.vy -= fy; }
+      }
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const a = nodes[i];
+          const b = nodes[j];
+          const dx = b.x - a.x;
+          const dy = b.y - a.y;
+          const dist = Math.max(1, Math.hypot(dx, dy));
+          const minDist = a.r + b.r + 18;
+          const overlap = minDist - dist;
+          const push = overlap > 0 ? overlap * 0.018 : 46 / (dist * dist);
+          const fx = dx / dist * push;
+          const fy = dy / dist * push;
+          if (!a.pinned) { a.vx -= fx; a.vy -= fy; }
+          if (!b.pinned) { b.vx += fx; b.vy += fy; }
+        }
+      }
+      nodes.forEach(node => {
+        if (!node.pinned) {
+          node.vx += (node.anchorX - node.x) * 0.006;
+          node.vy += (node.anchorY - node.y) * 0.006;
+          node.vx *= 0.84;
+          node.vy *= 0.84;
+          node.x = clamp(node.x + node.vx, node.r + 8, WIDTH - node.r - 8);
+          node.y = clamp(node.y + node.vy, node.r + 8, HEIGHT - node.r - 8);
+        }
+      });
+      renderGraph();
+      requestAnimationFrame(tick);
+    }
+
+    function renderGraph() {
+      nodeEls.forEach((element, index) => {
+        const node = nodes[index];
+        element.setAttribute("transform", `translate(${node.x},${node.y})`);
+      });
+      links.forEach((link, index) => {
+        const dx = link.target.x - link.source.x;
+        const dy = link.target.y - link.source.y;
+        const dist = Math.max(1, Math.hypot(dx, dy));
+        const sx = link.source.x + dx / dist * (link.source.r + 4);
+        const sy = link.source.y + dy / dist * (link.source.r + 4);
+        const tx = link.target.x - dx / dist * (link.target.r + 9);
+        const ty = link.target.y - dy / dist * (link.target.r + 9);
+        const curve = Math.min(96, Math.max(34, dist * 0.28));
+        const mx = (sx + tx) / 2;
+        const my = (sy + ty) / 2;
+        linkEls[index].setAttribute("d", `M ${sx} ${sy} Q ${mx} ${my - curve * 0.08} ${tx} ${ty}`);
+        const label = labelEls[index];
+        if (label) {
+          label.setAttribute("x", mx);
+          label.setAttribute("y", my - 7);
+        }
+      });
+    }
+
+    function splitLabel(value, maxChars) {
+      const text = String(value);
+      if (text.length <= maxChars) return [text];
+      const lines = [];
+      let current = "";
+      for (const char of text) {
+        current += char;
+        if (current.length >= maxChars) {
+          lines.push(current);
+          current = "";
+        }
+      }
+      if (current) lines.push(current);
+      return lines.slice(0, 3);
+    }
+
+    function clamp(value, min, max) {
+      return Math.min(max, Math.max(min, value));
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, ch => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[ch]));
+    }
+    renderGraph();
+    requestAnimationFrame(tick);
+  </script>
+  <style>.page-qr-panel{position:fixed;right:18px;bottom:18px;z-index:9999;width:150px;padding:12px;border:1px solid #dbe4ef;border-radius:16px;background:rgba(255,255,255,.96);box-shadow:0 12px 32px rgba(15,23,42,.18);font-family:"Microsoft YaHei",sans-serif;text-align:center}.page-qr-panel img{display:block;width:126px;height:126px;margin:auto}.page-qr-panel strong{display:block;margin:6px 0 2px;font-size:13px;color:#172033}.page-qr-panel a{font-size:12px;color:#1d4ed8;text-decoration:none}@media(max-width:700px){.page-qr-panel{width:112px;padding:8px}.page-qr-panel img{width:94px;height:94px}}@media print{.page-qr-panel{position:fixed;box-shadow:none}}</style>
+  <aside class="page-qr-panel" aria-label="本页二维码"><img src="qrcodes/chapter-05-statistics-distributions.png" alt="第五章统计量及其分布二维码"><strong>扫码打开本页</strong><a href="index.html">返回资源首页</a> · <a href="qrcodes/chapter-05-statistics-distributions.png" download>下载二维码</a></aside>
+</body>
+</html>

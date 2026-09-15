@@ -109,6 +109,11 @@
       margin: 12px 0;
     }
     .small { color: var(--muted); font-size: 14px; }
+    .fresh-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:14px; }
+    .fresh-card { border:1px solid var(--line); border-top:4px solid var(--accent); border-radius:8px; padding:16px; background:#fbfcfd; }
+    .fresh-card h3 { margin:0 0 7px; line-height:1.45; }
+    .fresh-card p { margin:7px 0; }
+    .status { color:var(--green); font-size:13px; font-weight:700; }
     footer {
       color: var(--muted);
       font-size: 13px;
@@ -170,6 +175,27 @@
     </section>
 
     <section>
+      <h2>2025—2026 新增前沿专题</h2>
+      <div class="note">更新时间：2026-09-15。以下 14 篇文献覆盖大语言模型、抽样与估计、渐近理论、高维统计、贝叶斯推断、分布式学习和多重检验。书目信息已按论文官网、期刊官网及 DOI 元数据核对；其中大语言模型综述的准确编号为 <strong>arXiv:2303.18223（2023）</strong>。</div>
+      <div class="fresh-grid">
+        <article class="fresh-card"><h3>生成式预训练与 GPT 起点</h3><p class="status">基础模型 · 技术报告</p><p>Radford et al. (2018) 提出“无监督生成式预训练 + 有监督微调”的统一框架，是理解 GPT 技术路线的重要起点。</p><p><span class="tag">pre-training</span><span class="tag">representation learning</span></p><p><a href="https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf">阅读报告</a></p></article>
+        <article class="fresh-card"><h3>DeepSeek-V3 技术报告</h3><p class="status">大模型工程 · 2024</p><p>介绍混合专家架构、Multi-head Latent Attention、多 token 预测及大规模训练实践，可用于讨论统计学习与现代基础模型的联系。</p><p><span class="tag">LLM</span><span class="tag">Mixture-of-Experts</span></p><p><a href="https://arxiv.org/abs/2412.19437">arXiv:2412.19437</a></p></article>
+        <article class="fresh-card"><h3>大语言模型综述</h3><p class="status">综述 · 首发于 2023</p><p>Zhao et al. 系统梳理预训练、适配、使用与评测。原清单中的“arXiv:2111.01243，2021”已校正为 <strong>arXiv:2303.18223，2023</strong>。</p><p><span class="tag">survey</span><span class="tag">LLM</span></p><p><a href="https://arxiv.org/abs/2303.18223">阅读论文</a></p></article>
+        <article class="fresh-card"><h3>最优排序集抽样下总体方差估计</h3><p class="status">抽样设计 · 点估计</p><p>张棚、陈望学（2026）比较简单随机抽样、平衡排序集抽样及两类最优排序集抽样下总体方差估计的效率。</p><p><span class="tag">ranked set sampling</span><span class="tag">variance estimation</span></p><p><a href="https://doi.org/10.12341/jssms240884">DOI: 10.12341/jssms240884</a></p></article>
+        <article class="fresh-card"><h3>次线性期望下的完全收敛</h3><p class="status">概率极限定理 · 2025</p><p>徐明周、程琨研究次线性期望空间中独立同分布随机变量序列加权和完全收敛的等价条件。</p><p><span class="tag">complete convergence</span><span class="tag">sublinear expectation</span></p><p><a href="https://doi.org/10.12460/j.issn.1001-4268.aps.2025.2023029">查看期刊页面</a></p></article>
+        <article class="fresh-card"><h3>部分线性回归的可更新估计</h3><p class="status">在线估计 · 2026</p><p>盖玉洁等提出面向分块数据的可更新参数与非参数估计方法，并讨论相合性、渐近正态性和计算效率。</p><p><span class="tag">renewable estimation</span><span class="tag">partially linear model</span></p><p><a href="https://doi.org/10.12460/j.issn.1001-4268.aps.2026.2024058">查看期刊页面</a></p></article>
+        <article class="fresh-card"><h3>条件混合矩的渐近行为</h3><p class="status">重尾风险 · 网络首发</p><p>杨洋、张科亚、张志民研究多元正则变换结构下条件混合矩的渐近性质及其在系统风险和资本分配中的应用。</p><p><span class="tag">regular variation</span><span class="tag">tail risk</span></p><p><a href="https://doi.org/10.1360/SSM-2025-0074">DOI: 10.1360/SSM-2025-0074</a></p></article>
+        <article class="fresh-card"><h3>高维结果依赖抽样下的自适应矩估计</h3><p class="status">高维回归 · 2025</p><p>朱瑾瑜、丁洁丽面向结果依赖抽样数据，提出两种改进的自适应矩估计算法并建立理论性质。</p><p><span class="tag">outcome-dependent sampling</span><span class="tag">GLM</span></p><p><a href="https://doi.org/10.12386/A20240049">DOI: 10.12386/A20240049</a></p></article>
+        <article class="fresh-card"><h3>整数规划驱动的稀疏 PCA</h3><p class="status">高维统计 · 2026</p><p>Behdin 与 Mazumder 构造可扩展的稀疏主成分估计量，把统计保证与混合整数规划算法结合起来。</p><p><span class="tag">sparse PCA</span><span class="tag">integer programming</span></p><p><a href="https://doi.org/10.1214/25-AOS2551">DOI: 10.1214/25-AOS2551</a></p></article>
+        <article class="fresh-card"><h3>局部奇异约束下的 Wald 检验</h3><p class="status">假设检验 · 2025</p><p>Dufour、Renault 与 Zinde-Walsh 说明非正则情形中 Wald 统计量可能具有多种极限行为，并提出自适应判断策略。</p><p><span class="tag">Wald test</span><span class="tag">nonregular inference</span></p><p><a href="https://doi.org/10.1214/24-AOS2398">DOI: 10.1214/24-AOS2398</a></p></article>
+        <article class="fresh-card"><h3>McKean–Vlasov 模型的贝叶斯非参数推断</h3><p class="status">贝叶斯推断 · 2025</p><p>Nickl、Pavliotis 与 Ray 利用高斯过程先验，从离散时空观测中推断相互作用势并研究后验收敛速度。</p><p><span class="tag">Gaussian process</span><span class="tag">inverse problem</span></p><p><a href="https://doi.org/10.1214/24-AOS2459">DOI: 10.1214/24-AOS2459</a></p></article>
+        <article class="fresh-card"><h3>贝叶斯迁移学习的估计与推断</h3><p class="status">JASA · 在线优先 2026</p><p>Lai、Madrid Padilla、Li 与 Gu 研究多源高维迁移学习，在借用源信息的同时兼顾后验收缩、区间覆盖与负迁移防护。</p><p><span class="tag">transfer learning</span><span class="tag">Bayesian inference</span></p><p><a href="https://doi.org/10.1080/01621459.2026.2685359">DOI: 10.1080/01621459.2026.2685359</a></p></article>
+        <article class="fresh-card"><h3>异质环境下的分布式非参数回归</h3><p class="status">JCGS · 2026</p><p>Chen、Li 与 Xu 通过基于预测误差的聚合权重整合各节点估计，处理分布异质、样本不平衡与异常值。</p><p><span class="tag">distributed regression</span><span class="tag">aggregation</span></p><p><a href="https://doi.org/10.1080/10618600.2026.2626382">DOI: 10.1080/10618600.2026.2626382</a></p></article>
+        <article class="fresh-card"><h3>基于 e-values 的图模型 FDR 控制</h3><p class="status">多重检验 · 2025</p><p>Zhao、Zhou、Zheng 与 Zhou 将 e-values 用于高维图结构推断，在检验统计量存在任意依赖时控制错误发现率。</p><p><span class="tag">e-value</span><span class="tag">graphical model</span><span class="tag">FDR</span></p><p><a href="https://doi.org/10.1002/sta4.70123">DOI: 10.1002/sta4.70123</a></p></article>
+      </div>
+    </section>
+
+    <section>
       <h2>按第5-9章组织的前沿阅读</h2>
       <h3>第5章：统计量及其分布</h3>
       <p><strong>前沿关键词：</strong>高维检验统计量、无模型推断、conformal prediction、有限样本有效性。</p>
@@ -226,6 +252,22 @@
 
     <section>
       <h2>APA 格式参考文献</h2>
+      <h3>本次新增文献</h3>
+      <p class="apa">Radford, A., Narasimhan, K., Salimans, T., &amp; Sutskever, I. (2018). <em>Improving language understanding by generative pre-training</em>. OpenAI. <a href="https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf">报告原文</a></p>
+      <p class="apa">DeepSeek-AI. (2024). <em>DeepSeek-V3 technical report</em>. arXiv. <a href="https://doi.org/10.48550/arXiv.2412.19437">https://doi.org/10.48550/arXiv.2412.19437</a></p>
+      <p class="apa">Zhao, W. X., Zhou, K., Li, J., et al. (2023). A survey of large language models. <em>arXiv preprint arXiv:2303.18223</em>. <a href="https://doi.org/10.48550/arXiv.2303.18223">https://doi.org/10.48550/arXiv.2303.18223</a></p>
+      <p class="apa">张棚, 陈望学. (2026). 最优排序集抽样下正态分布中总体方差的优良估计及其性质. <em>系统科学与数学, 46</em>(6), 2048–2063. <a href="https://doi.org/10.12341/jssms240884">https://doi.org/10.12341/jssms240884</a></p>
+      <p class="apa">徐明周, 程琨. (2025). 次线性期望下独立同分布随机变量序列加权和的完全收敛的等价条件. <em>应用概率统计, 41</em>(3), 339–352. <a href="https://doi.org/10.12460/j.issn.1001-4268.aps.2025.2023029">https://doi.org/10.12460/j.issn.1001-4268.aps.2025.2023029</a></p>
+      <p class="apa">盖玉洁, 孟康, 谢雨娇, &amp; 王晓迪. (2026). 部分线性回归模型的可更新估计方法. <em>应用概率统计, 42</em>(1), 131–156. <a href="https://doi.org/10.12460/j.issn.1001-4268.aps.2026.2024058">https://doi.org/10.12460/j.issn.1001-4268.aps.2026.2024058</a></p>
+      <p class="apa">杨洋, 张科亚, &amp; 张志民. (2026). 多元正则变换结构下条件混合矩的渐近行为. <em>中国科学：数学, 56</em>, 1–18（网络首发）. <a href="https://doi.org/10.1360/SSM-2025-0074">https://doi.org/10.1360/SSM-2025-0074</a></p>
+      <p class="apa">朱瑾瑜, 丁洁丽. (2025). 广义线性回归中高维结果依赖抽样设计下的自适应矩估计算法. <em>数学学报（中文版）, 68</em>(6), 889–904. <a href="https://doi.org/10.12386/A20240049">https://doi.org/10.12386/A20240049</a></p>
+      <p class="apa">Behdin, K., &amp; Mazumder, R. (2026). Sparse PCA: A new scalable estimator based on integer programming. <em>The Annals of Statistics, 54</em>(3), 1101–1127. <a href="https://doi.org/10.1214/25-AOS2551">https://doi.org/10.1214/25-AOS2551</a></p>
+      <p class="apa">Dufour, J.-M., Renault, E., &amp; Zinde-Walsh, V. (2025). Wald tests when restrictions are locally singular. <em>The Annals of Statistics, 53</em>(2), 457–476. <a href="https://doi.org/10.1214/24-AOS2398">https://doi.org/10.1214/24-AOS2398</a></p>
+      <p class="apa">Nickl, R., Pavliotis, G. A., &amp; Ray, K. (2025). Bayesian nonparametric inference in McKean–Vlasov models. <em>The Annals of Statistics, 53</em>(1), 170–193. <a href="https://doi.org/10.1214/24-AOS2459">https://doi.org/10.1214/24-AOS2459</a></p>
+      <p class="apa">Lai, D., Madrid Padilla, O. H., Li, X., &amp; Gu, T. (2026). Bayesian transfer learning for enhanced estimation and inference. <em>Journal of the American Statistical Association</em>, 1–14 (advance online publication). <a href="https://doi.org/10.1080/01621459.2026.2685359">https://doi.org/10.1080/01621459.2026.2685359</a></p>
+      <p class="apa">Chen, Z., Li, R., &amp; Xu, Y. (2026). Distributed nonparametric regression with heterogeneity through prediction-based aggregation. <em>Journal of Computational and Graphical Statistics, 35</em>(3), 1407–1419. <a href="https://doi.org/10.1080/10618600.2026.2626382">https://doi.org/10.1080/10618600.2026.2626382</a></p>
+      <p class="apa">Zhao, N., Zhou, X., Zheng, Z., &amp; Zhou, J. (2025). FDR control for high-dimensional graphical models via e-values. <em>Stat, 14</em>(4), Article e70123. <a href="https://doi.org/10.1002/sta4.70123">https://doi.org/10.1002/sta4.70123</a></p>
+      <h3>原有课程映射文献</h3>
       <p class="apa">Abegaz, K. J. A., Smilde, A. K., Acharjee, A., & Timmerman, M. E. (2025). A generalized linear modeling approach to ANOVA-simultaneous component analysis for microbiome high-dimensional experimental design data. <em>Frontiers in Microbiomes, 4</em>, Article 1584516. <a href="https://doi.org/10.3389/frmbi.2025.1584516">https://doi.org/10.3389/frmbi.2025.1584516</a></p>
       <p class="apa">Bach, P., Chernozhukov, V., Kurz, M. S., & Spindler, M. (2024). DoubleML - An object-oriented implementation of double machine learning in R. <em>Journal of Statistical Software, 108</em>(3), 1-56. <a href="https://doi.org/10.18637/jss.v108.i03">https://doi.org/10.18637/jss.v108.i03</a></p>
       <p class="apa">Barber, R. F., Candès, E. J., Ramdas, A., & Tibshirani, R. J. (2023). Conformal prediction beyond exchangeability. <em>The Annals of Statistics, 51</em>(2), 816-845. <a href="https://doi.org/10.1214/23-AOS2276">https://doi.org/10.1214/23-AOS2276</a></p>
@@ -249,7 +291,7 @@
       <p>建议先读每章对应的教材内容，再挑一篇前沿论文做“概念定位”：先找出论文中的统计量、估计量、置信区间或检验问题，再看作者如何处理经典假设被破坏后的推断有效性。这样可以让第5-9章不只是公式训练，而是进入现代统计研究的入口。</p>
     </section>
 
-    <footer>单文件 HTML · Generated on 2026-07-13 · Project_005_数理统计经典阅读文献</footer>
+    <footer>单文件 HTML · Updated on 2026-09-15 · 数理统计知识图谱</footer>
   </main>
   <style>.page-qr-panel{position:fixed;right:18px;bottom:18px;z-index:9999;width:150px;padding:12px;border:1px solid #dbe4ef;border-radius:16px;background:rgba(255,255,255,.96);box-shadow:0 12px 32px rgba(15,23,42,.18);font-family:"Microsoft YaHei",sans-serif;text-align:center}.page-qr-panel img{display:block;width:126px;height:126px;margin:auto}.page-qr-panel strong{display:block;margin:6px 0 2px;font-size:13px;color:#172033}.page-qr-panel a{font-size:12px;color:#1d4ed8;text-decoration:none}@media(max-width:700px){.page-qr-panel{width:112px;padding:8px}.page-qr-panel img{width:94px;height:94px}}@media print{.page-qr-panel{position:fixed;box-shadow:none}}</style>
   <aside class="page-qr-panel" aria-label="本页二维码"><img src="qrcodes/frontier-literature.png" alt="数理统计前沿文献二维码"><strong>扫码打开本页</strong><a href="index.html">返回资源首页</a> · <a href="qrcodes/frontier-literature.png" download>下载二维码</a></aside>
